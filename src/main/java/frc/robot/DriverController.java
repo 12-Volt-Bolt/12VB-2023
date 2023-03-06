@@ -7,20 +7,30 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 
 /** Add your docs here. */
-public class DriverController extends XboxController{
+public class DriverController extends XboxController {
 
     public DriverController(int port) {
         super(port);
 
-
     }
 
     public boolean isDpadUp() {
-        return getPOV()== 0;
+        return getPOV() == 0;
     }
 
     public boolean isDpadDown() {
-        return getPOV()== 180;
+        return getPOV() == 180;
     }
 
+    public double getXDriveAxis() {
+        return getRawAxis(1);
+    }
+
+    public double getYDriveAxis() {
+        return getRawAxis(0);
+    }
+
+    public double getZDriveAxis() {
+        return getRawAxis(4);
+    }
 }

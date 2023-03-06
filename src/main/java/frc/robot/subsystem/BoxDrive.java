@@ -21,7 +21,7 @@ public class BoxDrive extends SubsystemBase {
 
   public void drive(double xPower, double yPower, double zPower) {
     xPower = -xPower;
-    xPower = -ZPower;
+    zPower = -zPower;
 
     double leftPower = xPower;
     double rightPower = xPower;
