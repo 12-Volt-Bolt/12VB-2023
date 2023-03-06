@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.subsystem.Boxdrive;
 import frc.robot.subsystem.Grabber;
 import frc.robot.subsystem.Lifter;
 
@@ -27,16 +28,11 @@ public class Robot extends TimedRobot {
 
   public static Joystick controller1 = new Joystick(0);
 
-  private CANSparkMax left1 = new CANSparkMax(RobotMap.MOTOR_LEFT_1, MotorType.kBrushless);
-  private CANSparkMax left2 = new CANSparkMax(RobotMap.MOTOR_LEFT_2, MotorType.kBrushless);
-  private CANSparkMax right1 = new CANSparkMax(RobotMap.MOTOR_RIGHT_1, MotorType.kBrushless);
-  private CANSparkMax right2 = new CANSparkMax(RobotMap.MOTOR_RIGHT_2, MotorType.kBrushless);
-  private CANSparkMax front = new CANSparkMax(RobotMap.MOTOR_FRONT, MotorType.kBrushless);
-  private CANSparkMax back = new CANSparkMax(RobotMap.MOTOR_REAR, MotorType.kBrushless);
-
+  
   private Compressor compressor = new Compressor(RobotMap.PNEUMATICS_MODULE_TYPE);
   private Lifter lifter = new Lifter();
   private Grabber grabber = new Grabber();
+  private Boxdrive boxdrive = new Boxdrive();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -66,28 +62,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    double xpower = -controller1.getRawAxis(1);
-    double ypower = controller1.getRawAxis(0);
-    double zpower = -controller1.getRawAxis(4);
-    
-    double leftPower = xpower;
-    double rightPower = xpower;
-    double frontPower = ypower;
-    double backPower = ypower;
-
-    zpower *= 0.75;
-
-    leftPower += zpower * 0.66;
-    rightPower -= zpower * 0.66;
-    frontPower -= zpower;
-    backPower += zpower;
-
-    left1.set(-leftPower);
-    left2.set(-leftPower);
-    right1.set(rightPower);
-    right2.set(rightPower);
-    front.set(frontPower);
-    back.set(-backPower);
+    boxdrive.drive(-controller1.getRawAxis(1), controller1.getRawAxis(0), -controller1.getRawAxis(4));
 
     if(controller1.getRawButton(1)) {
       grabber.open();
