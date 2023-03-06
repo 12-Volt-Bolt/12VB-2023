@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.subsystem.Grabber;
 import frc.robot.subsystem.Lifter;
 
 /**
@@ -35,7 +36,7 @@ public class Robot extends TimedRobot {
 
   private Compressor compressor = new Compressor(RobotMap.PNEUMATICS_MODULE_TYPE);
   private Lifter lifter = new Lifter();
-  private Solenoid grabber = new Solenoid(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.GRABBER_CHANNEL);
+  private Grabber grabber = new Grabber();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -46,7 +47,7 @@ public class Robot extends TimedRobot {
 
     compressor.enableDigital();
     lifter.lower();
-    grabber.set(false);
+    grabber.open();
 
   }
 
@@ -89,10 +90,10 @@ public class Robot extends TimedRobot {
     back.set(-backPower);
 
     if(controller1.getRawButton(1)) {
-      grabber.set(true);
+      grabber.open();
     }
     if (controller1.getRawButton(2)) {
-      grabber.set(false);
+      grabber.close();
     }
 
     if(controller1.getPOV() == 0) {
