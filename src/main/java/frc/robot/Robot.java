@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -23,16 +25,16 @@ public class Robot extends TimedRobot {
 
   public static Joystick controller1 = new Joystick(0);
 
-  private CANSparkMax left1 = new CANSparkMax(2, MotorType.kBrushless);
-  private CANSparkMax left2 = new CANSparkMax(3, MotorType.kBrushless);
-  private CANSparkMax right1 = new CANSparkMax(7, MotorType.kBrushless);
-  private CANSparkMax right2 = new CANSparkMax(8, MotorType.kBrushless);
-  private CANSparkMax front = new CANSparkMax(1, MotorType.kBrushless);
-  private CANSparkMax back = new CANSparkMax(10, MotorType.kBrushless);
+  private CANSparkMax left1 = new CANSparkMax(RobotMap.MOTOR_LEFT_1, MotorType.kBrushless);
+  private CANSparkMax left2 = new CANSparkMax(RobotMap.MOTOR_LEFT_2, MotorType.kBrushless);
+  private CANSparkMax right1 = new CANSparkMax(RobotMap.MOTOR_RIGHT_1, MotorType.kBrushless);
+  private CANSparkMax right2 = new CANSparkMax(RobotMap.MOTOR_RIGHT_2, MotorType.kBrushless);
+  private CANSparkMax front = new CANSparkMax(RobotMap.MOTOR_FRONT, MotorType.kBrushless);
+  private CANSparkMax back = new CANSparkMax(RobotMap.MOTOR_REAR, MotorType.kBrushless);
 
-  private Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-  private Solenoid lifter = new Solenoid(PneumaticsModuleType.CTREPCM, 2);
-  private Solenoid grabber = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
+  private Compressor compressor = new Compressor(RobotMap.PNEUMATICS_MODULE_TYPE);
+  private Solenoid lifter = new Solenoid(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL);
+  private Solenoid grabber = new Solenoid(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.GRABBER_CHANNEL);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -78,25 +80,25 @@ public class Robot extends TimedRobot {
     frontPower -= zpower;
     backPower += zpower;
 
-    // left1.set(-leftPower);
-    // left2.set(-leftPower);
-    // right1.set(rightPower);
-    // right2.set(rightPower);
-    // front.set(frontPower);
-    // back.set(-backPower);
+    left1.set(-leftPower);
+    left2.set(-leftPower);
+    right1.set(rightPower);
+    right2.set(rightPower);
+    front.set(frontPower);
+    back.set(-backPower);
 
     if(controller1.getRawButton(1)) {
-      grabber.set(false);
+      grabber.set(true);
     }
     if (controller1.getRawButton(2)) {
-      grabber.set(true);
+      grabber.set(false);
     }
 
     if(controller1.getPOV() == 0) {
-      lifter.set(false);
+      lifter.set(true);
     }
     if(controller1.getPOV() == 180) {
-      lifter.set(true);
+      lifter.set(false);
     }
   }
 
