@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.subsystem.Lifter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,7 +34,7 @@ public class Robot extends TimedRobot {
   private CANSparkMax back = new CANSparkMax(RobotMap.MOTOR_REAR, MotorType.kBrushless);
 
   private Compressor compressor = new Compressor(RobotMap.PNEUMATICS_MODULE_TYPE);
-  private Solenoid lifter = new Solenoid(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL);
+  private Lifter lifter = new Lifter();
   private Solenoid grabber = new Solenoid(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.GRABBER_CHANNEL);
 
   /**
@@ -44,7 +45,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     compressor.enableDigital();
-    lifter.set(false);
+    lifter.lower();
     grabber.set(false);
 
   }
@@ -95,10 +96,10 @@ public class Robot extends TimedRobot {
     }
 
     if(controller1.getPOV() == 0) {
-      lifter.set(true);
+      lifter.raise();
     }
     if(controller1.getPOV() == 180) {
-      lifter.set(false);
+      lifter.lower();
     }
   }
 
