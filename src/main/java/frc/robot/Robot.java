@@ -63,8 +63,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-
-    // drivetrain.drive(controller1.getXDriveAxis(), controller1.getYDriveAxis(),  controller1.getZDriveAxis());
+    drivetrain.drive(controller1.getXDriveAxis(), controller1.getYDriveAxis(),  controller1.getZDriveAxis());
 
     if (controller1.getAButton()) {
       grabber.open();

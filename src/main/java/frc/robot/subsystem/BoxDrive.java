@@ -42,5 +42,4 @@ public class BoxDrive extends SubsystemBase {
     front.set(frontPower);
     back.set(-backPower);
   }
-
 }
