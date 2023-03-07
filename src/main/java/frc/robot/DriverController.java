@@ -11,7 +11,6 @@ public class DriverController extends XboxController {
 
     public DriverController(int port) {
         super(port);
-
     }
 
     public boolean isDpadUp() {
