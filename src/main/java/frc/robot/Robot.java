@@ -26,7 +26,7 @@ import frc.robot.subsystem.Lifter;
  */
 public class Robot extends TimedRobot {
 
-  public static Joystick controller1 = new Joystick(0);
+  public static DriverController controller1 = new DriverController(0);
 
   
   private Compressor compressor = new Compressor(RobotMap.PNEUMATICS_MODULE_TYPE);
@@ -62,19 +62,19 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    boxdrive.drive(-controller1.getRawAxis(1), controller1.getRawAxis(0), -controller1.getRawAxis(4));
+    boxdrive.drive(-controller1.getXDriveAxis(), controller1.getYDriveAxis(), -controller1.getZDriveAxis());
 
-    if(controller1.getRawButton(1)) {
+    if(controller1.getAButton()) {
       grabber.open();
     }
-    if (controller1.getRawButton(2)) {
+    if (controller1.getBButton()) {
       grabber.close();
     }
 
-    if(controller1.getPOV() == 0) {
+    if(controller1.isDPadUp()) {
       lifter.raise();
     }
-    if(controller1.getPOV() == 180) {
+    if(controller1.isDPadDown()) {
       lifter.lower();
     }
   }
