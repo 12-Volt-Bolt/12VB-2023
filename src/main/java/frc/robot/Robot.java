@@ -38,8 +38,6 @@ public class Robot extends TimedRobot {
   private Lifter lifter = new Lifter(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL);
   private Grabber grabber = new Grabber(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.GRABBER_CHANNEL);
 
-  private long autoStartTime = 0;
-
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -87,13 +85,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-<<<<<<< Updated upstream
     drivetrain.drive(controller1.getXDriveAxis(), controller1.getYDriveAxis(), controller1.getZDriveAxis());
 
-=======
-   drivetrain.drive(controller1.getXDriveAxis(), controller1.getYDriveAxis(),  controller1.getZDriveAxis());
- 
->>>>>>> Stashed changes
     if (controller1.getAButton()) {
       grabber.open();
     }
