@@ -9,6 +9,13 @@ import edu.wpi.first.wpilibj.XboxController;
 /** Add your docs here. */
 public class DriverController extends XboxController {
 
+    private double deadzone(double value, double deadzone) {
+        if (Math.abs(value) < Math.abs(deadzone)) {
+            return 0;
+        }
+        return value;
+    }
+
     public DriverController(int port) {
         super(port);
     }
@@ -22,14 +29,14 @@ public class DriverController extends XboxController {
     }
 
     public double getXDriveAxis() {
-        return getRawAxis(1);
+        return deadzone(getRawAxis(1), 0.2);
     }
 
     public double getYDriveAxis() {
-        return getRawAxis(0);
+        return deadzone(getRawAxis(0), 0.2);
     }
 
     public double getZDriveAxis() {
-        return getRawAxis(4);
+        return deadzone(getRawAxis(4), 0.2);
     }
 }

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -51,6 +52,8 @@ public class Robot extends TimedRobot {
     lifter.lower();
     grabber.open();
 
+    CameraServer.startAutomaticCapture();
+
   }
 
   /*
@@ -84,8 +87,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+<<<<<<< Updated upstream
     drivetrain.drive(controller1.getXDriveAxis(), controller1.getYDriveAxis(), controller1.getZDriveAxis());
 
+=======
+   drivetrain.drive(controller1.getXDriveAxis(), controller1.getYDriveAxis(),  controller1.getZDriveAxis());
+ 
+>>>>>>> Stashed changes
     if (controller1.getAButton()) {
       grabber.open();
     }
@@ -99,6 +107,7 @@ public class Robot extends TimedRobot {
     if (controller1.isDpadDown()) {
       lifter.lower();
     }
+
   }
 
   /*
