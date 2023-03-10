@@ -54,58 +54,45 @@ public class RapidStopSlewRateLimiter implements SlewRateLimiter {
         return previousValue;
     }
 
-    private double differentDirectionCalculation(double nextValue) {
-        if (nextValue > 0) {
-            return setAndReturn(
-                    previousValue + Math.min(maxNegativeMagnitudeStopChange.value(), Math.abs(previousValue)));
-        } else if (nextValue < 0) {
-            return setAndReturn(
-                    previousValue - Math.min(maxPositiveMagnitudeStopChange.value(), Math.abs(previousValue)));
-        }
-        return setAndReturn(0);
-    }
-
-    private double positivePower(double nextValue, double diff) {
-        if (diff > 0) {
-            // traveling forward and speeding up
-            if (diff > maxPositiveMagnitudeChange.value()) {
-                return setAndReturn(previousValue + maxPositiveMagnitudeChange.value());
-            }
-        } else {
-            // traveling forward and slowing down
-            if (-diff > maxPositiveMagnitudeStopChange.value()) {
-                return setAndReturn(previousValue - maxPositiveMagnitudeStopChange.value());
-            }
-        }
-        return setAndReturn(nextValue);
-    }
-
-    private double negativePower(double nextValue, double diff) {
-        if (diff < 0) {
-            // traveling backward and speeding up
-            if (-diff > maxNegativeMagnitudeChange.value()) {
-                return setAndReturn(previousValue - maxNegativeMagnitudeChange.value());
-            }
-        } else {
-            // traveling backward and slowing down
-            if (diff > maxNegativeMagnitudeStopChange.value()) {
-                return setAndReturn(previousValue + maxNegativeMagnitudeStopChange.value());
-            }
-        }
-        return setAndReturn(nextValue);
-    }
-
     @Override
     public double step(double nextValue) {
-        if (Math.copySign(1, nextValue) != Math.copySign(1, previousValue) && previousValue != 0) {
-            return differentDirectionCalculation(nextValue);
-        }
-
-        double diff = nextValue - previousValue;
-        if (nextValue > 0) {
-            return positivePower(nextValue, diff);
-        } else if (nextValue < 0) {
-            return negativePower(nextValue, diff);
+        if (previousValue > 0) {
+            // traveling forward
+            if (nextValue > previousValue) {
+                // accelerating
+                if (nextValue - previousValue > maxPositiveMagnitudeChange.value()) {
+                    return setAndReturn(previousValue + maxPositiveMagnitudeChange.value());
+                }
+            } else if (nextValue < previousValue) {
+                // decelerating
+                if (previousValue - nextValue > maxPositiveMagnitudeStopChange.value()) {
+                    return setAndReturn(previousValue - maxPositiveMagnitudeStopChange.value());
+                }
+            }
+        } else if (previousValue < 0) {
+            // traveling backward
+            if (nextValue < previousValue) {
+                // accelerating
+                if (previousValue - nextValue > maxNegativeMagnitudeChange.value()) {
+                    return setAndReturn(previousValue - maxNegativeMagnitudeChange.value());
+                }
+            } else if (nextValue > previousValue) {
+                // decelerating
+                if (nextValue - previousValue > maxNegativeMagnitudeStopChange.value()) {
+                    return setAndReturn(previousValue + maxNegativeMagnitudeStopChange.value());
+                }
+            }
+        } else {
+            // currently stopped
+            if (nextValue > 0) {
+                if (nextValue > maxPositiveMagnitudeChange.value()) {
+                    return setAndReturn(maxPositiveMagnitudeChange.value());
+                }
+            } else if (nextValue < 0) {
+                if (-nextValue > maxNegativeMagnitudeChange.value()) {
+                    return setAndReturn(-maxNegativeMagnitudeChange.value());
+                }
+            }
         }
 
         return setAndReturn(nextValue);
