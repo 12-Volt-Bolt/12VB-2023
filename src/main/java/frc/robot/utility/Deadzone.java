@@ -18,10 +18,10 @@ public class Deadzone {
             return 0;
         }
 
-        if (input > minPositive) {
+        if (input >= minPositive) {
             return (input - minPositive) / (maxPositive - minPositive);
-        } else if (input > minNegative) {
-            return (input - minNegative) / (maxNegative - minNegative);
+        } else if (input <= minNegative) {
+            return (input - minNegative) / (maxNegative - minNegative) * -1;
         }
 
         return input;
