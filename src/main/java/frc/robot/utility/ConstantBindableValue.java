@@ -12,4 +12,8 @@ public class ConstantBindableValue<T> implements BindableValue<T> {
         return value;
     }
     
+    @Override
+    public ConstantBindableValue<T> clone() {
+        return new ConstantBindableValue<T>(value);
+    }
 }
