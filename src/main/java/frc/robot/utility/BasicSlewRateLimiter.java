@@ -30,4 +30,9 @@ public class BasicSlewRateLimiter implements SlewRateLimiter {
         previousValue = nextValue;
         return previousValue;
     }
+
+    @Override
+    public SlewRateLimiter clone() {
+        return new BasicSlewRateLimiter(maxPositiveChange, maxNegativeChange);
+    }
 }

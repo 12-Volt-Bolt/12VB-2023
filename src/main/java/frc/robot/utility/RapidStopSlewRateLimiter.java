@@ -111,4 +111,12 @@ public class RapidStopSlewRateLimiter implements SlewRateLimiter {
         return setAndReturn(nextValue);
     }
 
+    @Override
+    public SlewRateLimiter clone() {
+        return new RapidStopSlewRateLimiter(
+                maxPositiveMagnitudeChange.clone(), 
+                maxNegativeMagnitudeChange.clone(), 
+                maxPositiveMagnitudeStopChange.clone(), 
+                maxNegativeMagnitudeStopChange.clone());
+    }
 }
