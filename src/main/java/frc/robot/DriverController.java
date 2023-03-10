@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.utility.Deadzone;
+import frc.robot.utility.ThrottleCurve;
 
 /** Add your docs here. */
 public class DriverController extends XboxController {
@@ -23,14 +24,23 @@ public class DriverController extends XboxController {
     }
 
     public double getXDriveAxis() {
-        return Deadzone.inputRemap(getRawAxis(1), 1.0, 0.2);
+        double input = getRawAxis(1);
+        input = Deadzone.inputRemap(input, 1.0, 0.2);
+        input = ThrottleCurve.calculate(input, 1.5);
+        return input;
     }
 
     public double getYDriveAxis() {
-        return Deadzone.inputRemap(getRawAxis(0), 1.0, 0.2);
+        double input = getRawAxis(0);
+        input = Deadzone.inputRemap(input, 1.0, 0.2);
+        input = ThrottleCurve.calculate(input, 1.5);
+        return input;
     }
 
     public double getZDriveAxis() {
-        return Deadzone.inputRemap(getRawAxis(4), 1.0, 0.2);
+        double input = getRawAxis(4);
+        input = Deadzone.inputRemap(input, 1.0, 0.2);
+        input = ThrottleCurve.calculate(input, 1.5);
+        return input;
     }
 }
