@@ -11,11 +11,11 @@ public class RapidStopSlewRateLimiter implements SlewRateLimiter {
     private double maxNegativeMagnitudeStopChange;
 
     public RapidStopSlewRateLimiter(double maxPositiveMagnitudeChange, double maxNegativeMagnitudeChange, double maxPositiveMagnitudeStopChange, double maxNegativeMagnitudeStopChange) {
-        this.maxPositiveMagnitudeChange = maxPositiveMagnitudeChange;
-        this.maxNegativeMagnitudeChange = maxNegativeMagnitudeChange;
+        this.maxPositiveMagnitudeChange = Math.abs(maxPositiveMagnitudeChange);
+        this.maxNegativeMagnitudeChange = Math.abs(maxNegativeMagnitudeChange);
 
-        this.maxPositiveMagnitudeStopChange = maxPositiveMagnitudeStopChange;
-        this.maxNegativeMagnitudeStopChange = maxNegativeMagnitudeStopChange;
+        this.maxPositiveMagnitudeStopChange = Math.abs(maxPositiveMagnitudeStopChange);
+        this.maxNegativeMagnitudeStopChange = Math.abs(maxNegativeMagnitudeStopChange);
     }
 
     public RapidStopSlewRateLimiter(double maxChange, double maxStopChange) {
@@ -26,48 +26,64 @@ public class RapidStopSlewRateLimiter implements SlewRateLimiter {
         this(maxChange, maxChange, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
     }
 
+    private double setAndReturn(double newValue) {
+        previousValue = newValue;
+        return previousValue;
+    }
+
+    private double differentDirectionCalculation(double nextValue) {
+        if (nextValue > 0) {
+            return setAndReturn(previousValue + Math.min(maxNegativeMagnitudeStopChange, Math.abs(previousValue)));
+        } else if (nextValue < 0) {
+            return setAndReturn(previousValue - Math.min(maxPositiveMagnitudeStopChange, Math.abs(previousValue)));
+        } 
+        return setAndReturn(0);
+    }
+
+    private double positivePower(double nextValue, double diff) {
+        if (diff > 0) {
+            // traveling forward and speeding up
+            if (diff > maxPositiveMagnitudeChange) {
+                return setAndReturn(previousValue + maxPositiveMagnitudeChange);
+            }
+        } else {
+            // traveling forward and slowing down
+            if (-diff > maxPositiveMagnitudeStopChange) {
+                return setAndReturn(previousValue - maxPositiveMagnitudeStopChange);
+            }
+        }
+        return setAndReturn(nextValue);
+    }
+
+    private double negativePower(double nextValue, double diff) {
+        if (diff < 0) {
+            // traveling backward and speeding up
+            if (-diff > maxNegativeMagnitudeChange) {
+                return setAndReturn(previousValue - maxNegativeMagnitudeChange);
+            }
+        } else {
+            // traveling backward and slowing down
+            if (diff > maxNegativeMagnitudeStopChange) {
+                return setAndReturn(previousValue + maxNegativeMagnitudeStopChange);
+            }
+        }
+        return setAndReturn(nextValue);
+    }
+
     @Override
     public double step(double nextValue) {
         if (Math.copySign(1, nextValue) != Math.copySign(1, previousValue) && previousValue != 0) {
-            if (nextValue > 0) {
-                previousValue += Math.min(maxNegativeMagnitudeStopChange, Math.abs(previousValue));
-                return previousValue;
-            } else if (nextValue < 0) {
-                previousValue -= Math.min(maxPositiveMagnitudeStopChange, Math.abs(previousValue));
-                return previousValue;
-            }
+            return differentDirectionCalculation(nextValue);
         }
 
         double diff = nextValue - previousValue;
         if (nextValue > 0) {
-            if (diff > 0) {
-                if (diff > maxPositiveMagnitudeChange) {
-                    previousValue += maxPositiveMagnitudeChange;
-                    return previousValue;
-                }
-            } else {
-                if (-diff > maxPositiveMagnitudeStopChange) {
-                    previousValue += maxPositiveMagnitudeStopChange;
-                    return previousValue;
-                }
-            }
+            return positivePower(nextValue, diff);
         } else if (nextValue < 0) {
-            diff = -diff;
-            if (diff > 0) {
-                if (diff > maxNegativeMagnitudeChange) {
-                    previousValue -= maxNegativeMagnitudeChange;
-                    return previousValue; 
-                }
-            } else {
-                if (-diff > maxNegativeMagnitudeStopChange) {
-                    previousValue -= maxNegativeMagnitudeStopChange;
-                    return previousValue;
-                }
-            }
+            return negativePower(nextValue, diff);
         }
 
-        previousValue = nextValue;
-        return previousValue;
+        return setAndReturn(nextValue);
     }
 
 }
