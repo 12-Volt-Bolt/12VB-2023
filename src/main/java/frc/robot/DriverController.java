@@ -24,7 +24,7 @@ public class DriverController extends XboxController {
     }
 
     public double getXDriveAxis() {
-        double input = getRawAxis(1);
+        double input = -getRawAxis(1);
         input = Deadzone.inputRemap(input, 1.0, 0.2);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;

@@ -53,7 +53,6 @@ public class BoxDrive extends SubsystemBase {
   }
 
   public void drive(double xPower, double yPower, double zPower) {
-    xPower = -xPower;
     zPower = -zPower;
 
     double newLeftPower = xPower;
