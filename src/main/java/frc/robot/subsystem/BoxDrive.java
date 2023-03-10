@@ -4,6 +4,8 @@
 
 package frc.robot.subsystem;
 
+import java.util.Optional;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -30,6 +32,25 @@ public class BoxDrive extends SubsystemBase {
   private SlewRateLimiter rightSRL = new RapidStopSlewRateLimiter(0.015);
   private SlewRateLimiter frontSRL = new RapidStopSlewRateLimiter(0.015);
   private SlewRateLimiter backSRL = new RapidStopSlewRateLimiter(0.015);
+
+  public void setSlewRateLimiters(
+      Optional<SlewRateLimiter> leftSRL, 
+      Optional<SlewRateLimiter> rightSRL,
+      Optional<SlewRateLimiter> frontSRL,
+      Optional<SlewRateLimiter> backSRL) {
+    if (leftSRL.isPresent()) {
+      this.leftSRL = leftSRL.get();
+    }
+    if (rightSRL.isPresent()) {
+      this.rightSRL = rightSRL.get();
+    }
+    if (frontSRL.isPresent()) {
+      this.frontSRL = frontSRL.get();
+    }
+    if (backSRL.isPresent()) {
+      this.backSRL = backSRL.get();
+    }
+  }
 
   public void drive(double xPower, double yPower, double zPower) {
     xPower = -xPower;
