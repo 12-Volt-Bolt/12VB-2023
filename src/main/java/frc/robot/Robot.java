@@ -15,6 +15,7 @@ import frc.robot.command.LowerLifter;
 import frc.robot.command.OpenGrabber;
 import frc.robot.command.RaiseLifter;
 import frc.robot.command.Wait;
+import frc.robot.config.DrivetrainConfig;
 import frc.robot.subsystem.BoxDrive;
 import frc.robot.subsystem.Grabber;
 import frc.robot.subsystem.Lifter;
@@ -32,7 +33,7 @@ public class Robot extends TimedRobot {
 
   public static DriverController controller1 = new DriverController(0);
 
-  public BoxDrive drivetrain = new BoxDrive();
+  private BoxDrive drivetrain = new BoxDrive();
 
   private Compressor compressor = new Compressor(RobotMap.PNEUMATICS_MODULE_TYPE);
   private Lifter lifter = new Lifter(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL);
@@ -45,19 +46,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    DrivetrainConfig.configSRL(drivetrain, lifter);
 
     compressor.enableDigital();
     lifter.lower();
     grabber.open();
 
     CameraServer.startAutomaticCapture();
-
   }
 
-  /*
-   * @Override
-   * public void robotPeriodic() {}
-   */
+  // @Override
+  // public void robotPeriodic() {}
 
   @Override
   public void autonomousInit() {
