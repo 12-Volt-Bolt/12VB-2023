@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
   /*
    * @Override
    * public void robotPeriodic() {}
-  */
+   */
 
   @Override
   public void autonomousInit() {
@@ -76,11 +76,13 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
   }
 
-  /*
-   * @Override
-   * public void teleopInit() {
-   * }
-   */
+  
+  @Override
+  public void teleopInit() {
+    lifter.lower();
+    grabber.open();
+  }
+  
 
   @Override
   public void teleopPeriodic() {
