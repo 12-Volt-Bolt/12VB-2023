@@ -62,7 +62,7 @@ public class DriverController extends XboxController {
      */
     public double yDriveAxis() {
         double input = -getRawAxis(1);
-        input = Deadzone.inputRemap(input, 1.0, 0.2);
+        input = Deadzone.inputRemap(input, 1.0, 0.2, 1.0);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;
     }
@@ -72,7 +72,7 @@ public class DriverController extends XboxController {
      */
     public double xDriveAxis() {
         double input = getRawAxis(0);
-        input = Deadzone.inputRemap(input, 1.0, 0.2);
+        input = Deadzone.inputRemap(input, 1.0, 0.2, 1.0);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;
     }
@@ -82,7 +82,7 @@ public class DriverController extends XboxController {
      */
     public double yawDriveAxis() {
         double input = getRawAxis(4);
-        input = Deadzone.inputRemap(input, 1.0, 0.2);
+        input = Deadzone.inputRemap(input, 1.0, 0.2, 1.0);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;
     }
