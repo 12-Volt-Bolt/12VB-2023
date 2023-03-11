@@ -17,7 +17,7 @@ public class LifterUpDeceleration implements BindableValue<Double> {
     }
     
     @Override
-    public BindableValue<Double> clone() {
+    public LifterUpDeceleration clone() {
       return new LifterUpDeceleration(lifter);
     }
 }

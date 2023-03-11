@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.config.TurboModeBindableValue;
 import frc.robot.utility.Remapper;
 import frc.robot.utility.ThrottleCurve;
 
@@ -13,8 +16,39 @@ public class DriverController extends XboxController {
 
     private Remapper drivestickRemapper = new Remapper(1.0, 0.2, 1.0);
 
+    private Remapper yRemapper = new Remapper(1.0, 0.0, 1.0);
+    private Remapper xRemapper = new Remapper(1.0, 0.0, 1.0);
+    private Remapper yawRemapper = new Remapper(1.0, 0.0, 1.0);
+
     public DriverController(int port) {
         super(port);
+
+        TurboModeBindableValue yBindValue = new TurboModeBindableValue(this, 0.5, 1.0);
+        yRemapper.maxPositiveOutput = yBindValue.clone();
+        yRemapper.maxNegativeOutput = yBindValue.clone().negate();
+        
+        TurboModeBindableValue xBindValue = new TurboModeBindableValue(this, 0.5, 1.0);
+        xRemapper.maxPositiveOutput = xBindValue.clone();
+        xRemapper.maxNegativeOutput = xBindValue.clone().negate();
+        
+        TurboModeBindableValue yawBindValue = new TurboModeBindableValue(this, 0.7, 1.0);
+        yawRemapper.maxPositiveOutput = yawBindValue.clone();
+        yawRemapper.maxNegativeOutput = yawBindValue.clone().negate();
+    }
+  
+    public void setRemappers(
+        Optional<Remapper> yRemapper,
+        Optional<Remapper> xRemapper,
+        Optional<Remapper> yawRemapper) {
+      if (yRemapper.isPresent()) {
+        this.yRemapper = yRemapper.get();
+      }
+      if (xRemapper.isPresent()) {
+        this.xRemapper = xRemapper.get();
+      }
+      if (yawRemapper.isPresent()) {
+        this.yawRemapper = yawRemapper.get();
+      }
     }
 
     /**
@@ -66,6 +100,7 @@ public class DriverController extends XboxController {
         double input = -getLeftY();
         input = drivestickRemapper.remap(input);
         input = ThrottleCurve.calculate(input, 1.5);
+        input = yRemapper.remap(input);
         return input;
     }
 
@@ -76,6 +111,7 @@ public class DriverController extends XboxController {
         double input = getRightTriggerAxis() - getLeftTriggerAxis();
         input = drivestickRemapper.remap(input);
         input = ThrottleCurve.calculate(input, 1.5);
+        input = xRemapper.remap(input);
         return input;
     }
 
@@ -86,6 +122,11 @@ public class DriverController extends XboxController {
         double input = getRightX();
         input = drivestickRemapper.remap(input);
         input = ThrottleCurve.calculate(input, 1.5);
+        input = yawRemapper.remap(input);
         return input;
+    }
+
+    public boolean turboMode() {
+        return getLeftBumper() || getRightBumper();
     }
 }
