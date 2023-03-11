@@ -53,6 +53,7 @@ public class Robot extends TimedRobot {
     grabber.open();
 
     CameraServer.startAutomaticCapture();
+    
   }
 
   // @Override
@@ -85,19 +86,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    drivetrain.drive(controller1.getXDriveAxis(), controller1.getYDriveAxis(), controller1.getZDriveAxis());
+    drivetrain.drive(controller1.yDriveAxis(), controller1.xDriveAxis(), controller1.yawDriveAxis());
 
-    if (controller1.getAButton()) {
+    if (controller1.closeGrabber()) {
       grabber.open();
     }
-    if (controller1.getBButton()) {
+    if (controller1.openGrabber()) {
       grabber.close();
     }
 
-    if (controller1.isDpadUp()) {
+    if (controller1.raiseLifter()) {
       lifter.raise();
     }
-    if (controller1.isDpadDown()) {
+    if (controller1.lowerLifter()) {
       lifter.lower();
     }
 

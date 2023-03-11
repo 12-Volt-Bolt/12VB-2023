@@ -7,6 +7,7 @@ package frc.robot.subsystem;
 import java.util.Optional;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,6 +34,15 @@ public class BoxDrive extends SubsystemBase {
   private SlewRateLimiter frontSRL = new RapidStopSlewRateLimiter(0.015);
   private SlewRateLimiter backSRL = new RapidStopSlewRateLimiter(0.015);
 
+  public BoxDrive() {
+    left1.setIdleMode(IdleMode.kBrake);
+    left2.setIdleMode(IdleMode.kBrake);
+    right1.setIdleMode(IdleMode.kBrake);
+    right2.setIdleMode(IdleMode.kBrake);
+    front.setIdleMode(IdleMode.kBrake);
+    back.setIdleMode(IdleMode.kBrake);
+  }
+
   public void setSlewRateLimiters(
       Optional<SlewRateLimiter> leftSRL, 
       Optional<SlewRateLimiter> rightSRL,
@@ -52,20 +62,27 @@ public class BoxDrive extends SubsystemBase {
     }
   }
 
-  public void drive(double xPower, double yPower, double zPower) {
-    zPower = -zPower;
+  /**
+   * Parameter definitions use the pattern positive/negative.
+   * 
+   * @param yPower Drive forward/backward.
+   * @param xPower Strafe right/left.
+   * @param yawPower Rotate clockwise/counterclockwise.
+   */
+  public void drive(double yPower, double xPower, double yawPower) {
+    yawPower = -yawPower;
 
-    double newLeftPower = xPower;
-    double newRightPower = xPower;
-    double newFrontPower = yPower;
-    double newBackPower = yPower;
+    double newLeftPower = yPower;
+    double newRightPower = yPower;
+    double newFrontPower = xPower;
+    double newBackPower = xPower;
 
-    zPower *= 0.75;
+    yawPower *= 0.75;
 
-    newLeftPower += zPower * 0.66;
-    newRightPower -= zPower * 0.66;
-    newFrontPower -= zPower;
-    newBackPower += zPower;
+    newLeftPower += yawPower * 0.66;
+    newRightPower -= yawPower * 0.66;
+    newFrontPower -= yawPower;
+    newBackPower += yawPower;
 
     leftPower = newLeftPower;
     rightPower = newRightPower;
@@ -75,7 +92,6 @@ public class BoxDrive extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println("run drivetrain, power: " + leftPower);
     double leftSetPower = leftSRL.step(leftPower);
     double rightSetPower = rightSRL.step(rightPower);
     double frontSetPower = frontSRL.step(frontPower);

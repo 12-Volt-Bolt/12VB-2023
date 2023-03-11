@@ -15,29 +15,72 @@ public class DriverController extends XboxController {
         super(port);
     }
 
+    /**
+     * @return Whether the up direction on the dpad is pressed.
+     */
     public boolean isDpadUp() {
         return getPOV() == 0;
     }
 
+    /**
+     * @return Whether the down direction on the dpad is pressed.
+     */
     public boolean isDpadDown() {
         return getPOV() == 180;
     }
 
-    public double getXDriveAxis() {
+    /**
+     * @return Whether the button assigned to raise the lifter is pressed.
+     */
+    public boolean raiseLifter() {
+        return isDpadUp();
+    }
+
+    /**
+     * @return Whether the button assigned to lower the lifter is pressed.
+     */
+    public boolean lowerLifter() {
+        return isDpadDown();
+    }
+
+    /**
+     * @return Whether the button assigned to open the grabber is pressed.
+     */
+    public boolean openGrabber() {
+        return getRightBumper();
+    }
+
+    /**
+     * @return Whether the button assigned to close the grabber is pressed.
+     */
+    public boolean closeGrabber() {
+        return getLeftBumper();
+    }
+
+    /**
+     * @return Forward/backward drive power.
+     */
+    public double yDriveAxis() {
         double input = -getRawAxis(1);
         input = Deadzone.inputRemap(input, 1.0, 0.2);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;
     }
 
-    public double getYDriveAxis() {
+    /**
+     * @return Right/left strafe power.
+     */
+    public double xDriveAxis() {
         double input = getRawAxis(0);
         input = Deadzone.inputRemap(input, 1.0, 0.2);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;
     }
 
-    public double getZDriveAxis() {
+    /**
+     * @return Clockwise/counterclockwise rotation power.
+     */
+    public double yawDriveAxis() {
         double input = getRawAxis(4);
         input = Deadzone.inputRemap(input, 1.0, 0.2);
         input = ThrottleCurve.calculate(input, 1.5);
