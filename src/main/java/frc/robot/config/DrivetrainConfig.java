@@ -10,7 +10,7 @@ import frc.robot.utility.SlewRateLimiter;
 
 public class DrivetrainConfig {
     public static void configSRL(BoxDrive drivetrain, Lifter lifter) {
-        SlewRateLimitBindableValue decelerationBindableValue = new SlewRateLimitBindableValue(lifter);
+        LifterUpDeceleration decelerationBindableValue = new LifterUpDeceleration(lifter);
     
         SlewRateLimiter frontBackSRL = new RapidStopSlewRateLimiter(
             new ConstantBindableValue<Double>(0.015), 

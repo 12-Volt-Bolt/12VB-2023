@@ -4,10 +4,10 @@ import frc.robot.subsystem.Lifter;
 import frc.robot.subsystem.Lifter.LifterPosition;
 import frc.robot.utility.BindableValue;
 
-public class SlewRateLimitBindableValue implements BindableValue<Double> {
+public class LifterUpDeceleration implements BindableValue<Double> {
     private Lifter lifter;
 
-    public SlewRateLimitBindableValue(Lifter lifter) {
+    public LifterUpDeceleration(Lifter lifter) {
         this.lifter = lifter;
     }
 
@@ -18,6 +18,6 @@ public class SlewRateLimitBindableValue implements BindableValue<Double> {
     
     @Override
     public BindableValue<Double> clone() {
-      return new SlewRateLimitBindableValue(lifter);
+      return new LifterUpDeceleration(lifter);
     }
 }
