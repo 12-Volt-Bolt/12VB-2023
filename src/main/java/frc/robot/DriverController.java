@@ -5,11 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.utility.Deadzone;
+import frc.robot.utility.Remapper;
 import frc.robot.utility.ThrottleCurve;
 
 /** Add your docs here. */
 public class DriverController extends XboxController {
+
+    private Remapper drivestickRemapper = new Remapper(1.0, 0.2, 1.0);
 
     public DriverController(int port) {
         super(port);
@@ -62,7 +64,7 @@ public class DriverController extends XboxController {
      */
     public double yDriveAxis() {
         double input = -getRawAxis(1);
-        input = Deadzone.inputRemap(input, 1.0, 0.2, 1.0);
+        input = drivestickRemapper.remap(input);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;
     }
@@ -72,7 +74,7 @@ public class DriverController extends XboxController {
      */
     public double xDriveAxis() {
         double input = getRawAxis(0);
-        input = Deadzone.inputRemap(input, 1.0, 0.2, 1.0);
+        input = drivestickRemapper.remap(input);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;
     }
@@ -82,7 +84,7 @@ public class DriverController extends XboxController {
      */
     public double yawDriveAxis() {
         double input = getRawAxis(4);
-        input = Deadzone.inputRemap(input, 1.0, 0.2, 1.0);
+        input = drivestickRemapper.remap(input);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;
     }
