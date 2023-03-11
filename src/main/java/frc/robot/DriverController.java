@@ -60,30 +60,30 @@ public class DriverController extends XboxController {
     }
 
     /**
-     * @return Forward/backward drive power.
+     * @return Forward/backward drive power (positive/negative).
      */
     public double yDriveAxis() {
-        double input = -getRawAxis(1);
+        double input = -getLeftY();
         input = drivestickRemapper.remap(input);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;
     }
 
     /**
-     * @return Right/left strafe power.
+     * @return Right/left strafe power (positive/negative).
      */
     public double xDriveAxis() {
-        double input = getRawAxis(0);
+        double input = getRightTriggerAxis() - getLeftTriggerAxis();
         input = drivestickRemapper.remap(input);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;
     }
 
     /**
-     * @return Clockwise/counterclockwise rotation power.
+     * @return Clockwise/counterclockwise rotation power (positive/negative).
      */
     public double yawDriveAxis() {
-        double input = getRawAxis(4);
+        double input = getRightX();
         input = drivestickRemapper.remap(input);
         input = ThrottleCurve.calculate(input, 1.5);
         return input;
