@@ -49,14 +49,14 @@ public class DriverController extends XboxController {
      * @return Whether the button assigned to open the grabber is pressed.
      */
     public boolean openGrabber() {
-        return getRightBumper();
+        return getBButton();
     }
 
     /**
      * @return Whether the button assigned to close the grabber is pressed.
      */
     public boolean closeGrabber() {
-        return getLeftBumper();
+        return getAButton();
     }
 
     /**
