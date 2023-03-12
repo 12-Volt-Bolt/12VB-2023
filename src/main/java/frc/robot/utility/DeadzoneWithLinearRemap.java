@@ -1,6 +1,6 @@
 package frc.robot.utility;
 
-public class Remapper {
+public class DeadzoneWithLinearRemap {
     public BindableValue<Double> maxPositiveInput;
     public BindableValue<Double> maxNegativeInput;
     public BindableValue<Double> minPositiveInput;
@@ -20,7 +20,7 @@ public class Remapper {
      * @param maxPositiveOutput The maximun positive output value.
      * @param maxNegativeOutput The maximun negative output value.
      */
-    public Remapper(
+    public DeadzoneWithLinearRemap(
             BindableValue<Double> maxPositiveInput,
             BindableValue<Double> maxNegativeInput,
             BindableValue<Double> minPositiveInput,
@@ -47,7 +47,7 @@ public class Remapper {
      * @param maxPositiveOutput The maximun positive output value.
      * @param maxNegativeOutput The maximun negative output value.
      */
-    public Remapper(
+    public DeadzoneWithLinearRemap(
             double maxPositiveInput,
             double maxNegativeInput,
             double minPositiveInput,
@@ -55,12 +55,12 @@ public class Remapper {
             double maxPositiveOutput,
             double maxNegativeOutput) {
         this(
-                new ConstantBindableValue<Double>(maxPositiveInput),
-                new ConstantBindableValue<Double>(maxNegativeInput),
-                new ConstantBindableValue<Double>(minPositiveInput),
-                new ConstantBindableValue<Double>(minNegativeInput),
-                new ConstantBindableValue<Double>(maxPositiveOutput),
-                new ConstantBindableValue<Double>(maxNegativeOutput));
+                new ReferenceBindableValue<Double>(maxPositiveInput),
+                new ReferenceBindableValue<Double>(maxNegativeInput),
+                new ReferenceBindableValue<Double>(minPositiveInput),
+                new ReferenceBindableValue<Double>(minNegativeInput),
+                new ReferenceBindableValue<Double>(maxPositiveOutput),
+                new ReferenceBindableValue<Double>(maxNegativeOutput));
     }
 
     /**
@@ -74,7 +74,7 @@ public class Remapper {
      *                           Equivilant to a deadzone.
      * @param maxOutputMagnitude The maximun output magnitude.
      */
-    public Remapper(
+    public DeadzoneWithLinearRemap(
             double maxInputMagnitude,
             double minInputMagnitude,
             double maxOutputMagnitude) {
@@ -95,7 +95,7 @@ public class Remapper {
      * @param maxInputMagnitude  The maximum input magnitude.
      * @param maxOutputMagnitude The maximun output magnitude.
      */
-    public Remapper(
+    public DeadzoneWithLinearRemap(
             double maxInputMagnitude,
             double maxOutputMagnitude) {
         this(
