@@ -8,8 +8,8 @@ import frc.robot.utility.ReferenceBindableValue;
 import frc.robot.utility.RapidStopSlewRateLimiter;
 import frc.robot.utility.SlewRateLimiter;
 
-public class DrivetrainConfig {
-    public static void configSRL(BoxDrive drivetrain, Lifter lifter) {
+public class BoxDriveConfig {
+    public static BoxDrive configSRL(BoxDrive drivetrain, Lifter lifter) {
         LifterUpDeceleration decelerationBindableValue = new LifterUpDeceleration(lifter);
     
         SlewRateLimiter frontBackSRL = new RapidStopSlewRateLimiter(
@@ -20,6 +20,6 @@ public class DrivetrainConfig {
     
         drivetrain.setSlewRateLimiters(Optional.of(frontBackSRL.cloneSRL()), Optional.of(frontBackSRL.cloneSRL()), Optional.empty(), Optional.empty());    
     
-        
+        return drivetrain;
     }
 }

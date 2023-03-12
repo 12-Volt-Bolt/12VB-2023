@@ -18,8 +18,9 @@ import frc.robot.command.OpenGrabber;
 import frc.robot.command.RaiseLifter;
 import frc.robot.command.SetIdleMode;
 import frc.robot.command.Wait;
-import frc.robot.config.DrivetrainConfig;
+import frc.robot.config.BoxDriveConfig;
 import frc.robot.subsystem.BoxDrive;
+import frc.robot.subsystem.Drivetrain;
 import frc.robot.subsystem.Grabber;
 import frc.robot.subsystem.Lifter;
 
@@ -34,7 +35,7 @@ import frc.robot.subsystem.Lifter;
  */
 public class Robot extends TimedRobot {
 
-  private BoxDrive drivetrain = new BoxDrive();
+  private Drivetrain drivetrain;
 
   private Compressor compressor = new Compressor(RobotMap.PNEUMATICS_MODULE_TYPE);
   private Lifter lifter = new Lifter(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL);
@@ -55,7 +56,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    DrivetrainConfig.configSRL(drivetrain, lifter);
+    drivetrain = BoxDriveConfig.configSRL(new BoxDrive(), lifter);
 
     compressor.enableDigital();
     lifter.lower();

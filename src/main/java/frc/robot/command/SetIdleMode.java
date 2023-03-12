@@ -7,14 +7,14 @@ package frc.robot.command;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystem.BoxDrive;
+import frc.robot.subsystem.Drivetrain;
 
 public class SetIdleMode extends CommandBase {
-  private BoxDrive drivetrain;
+  private Drivetrain drivetrain;
   private IdleMode mode;
 
   /** Creates a new SetBrakeMode. */
-  public SetIdleMode(BoxDrive drivetrain, IdleMode mode) {
+  public SetIdleMode(Drivetrain drivetrain, IdleMode mode) {
     this.drivetrain = drivetrain;
     this.mode = mode;
   }

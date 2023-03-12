@@ -5,11 +5,11 @@
 package frc.robot.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystem.BoxDrive;
+import frc.robot.subsystem.Drivetrain;
 
 public class Drive extends CommandBase {
   
-  private BoxDrive drivetrain;
+  private Drivetrain drivetrain;
   private long runTimeMillis; 
   private double xPower;
   private double yPower; 
@@ -17,7 +17,7 @@ public class Drive extends CommandBase {
 
   private long endTimeMillis;
 
-  public Drive(BoxDrive drivetrain, long runTimeMillis, double xPower, double yPower, double zPower) {
+  public Drive(Drivetrain drivetrain, long runTimeMillis, double xPower, double yPower, double zPower) {
     this.drivetrain = drivetrain;
     this.runTimeMillis = runTimeMillis;
     this.xPower = xPower;

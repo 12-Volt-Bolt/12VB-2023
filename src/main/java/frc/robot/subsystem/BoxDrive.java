@@ -10,12 +10,11 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import frc.robot.utility.RapidStopSlewRateLimiter;
 import frc.robot.utility.SlewRateLimiter;
 
-public class BoxDrive extends SubsystemBase {
+public class BoxDrive extends Drivetrain {
 
   private CANSparkMax left1 = new CANSparkMax(RobotMap.MOTOR_DRIVERSIDE_1, MotorType.kBrushless);
   private CANSparkMax left2 = new CANSparkMax(RobotMap.MOTOR_DRIVERSIDE_2, MotorType.kBrushless);
@@ -24,16 +23,12 @@ public class BoxDrive extends SubsystemBase {
   private CANSparkMax front = new CANSparkMax(RobotMap.MOTOR_FRONT, MotorType.kBrushless);
   private CANSparkMax back = new CANSparkMax(RobotMap.MOTOR_REAR, MotorType.kBrushless);
 
-  private double leftPower = 0;
-  private double rightPower = 0;
-  private double frontPower = 0;
-  private double backPower = 0;
-
   private SlewRateLimiter leftSRL = new RapidStopSlewRateLimiter(0.015);
   private SlewRateLimiter rightSRL = new RapidStopSlewRateLimiter(0.015);
   private SlewRateLimiter frontSRL = new RapidStopSlewRateLimiter(0.015);
   private SlewRateLimiter backSRL = new RapidStopSlewRateLimiter(0.015);
 
+  @Override
   public void setIdleMode(IdleMode mode) {
     left1.setIdleMode(mode);
     left2.setIdleMode(mode);
@@ -62,14 +57,8 @@ public class BoxDrive extends SubsystemBase {
     }
   }
 
-  /**
-   * Parameter definitions use the pattern positive/negative.
-   * 
-   * @param yPower Drive forward/backward.
-   * @param xPower Strafe right/left.
-   * @param yawPower Rotate clockwise/counterclockwise.
-   */
-  public void drive(double yPower, double xPower, double yawPower) {
+  @Override
+  protected void setMotors(double yPower, double xPower, double yawPower) {
     yawPower = -yawPower;
 
     double newLeftPower = yPower;
@@ -84,24 +73,16 @@ public class BoxDrive extends SubsystemBase {
     newFrontPower -= yawPower;
     newBackPower += yawPower;
 
-    leftPower = newLeftPower;
-    rightPower = newRightPower;
-    frontPower = newFrontPower;
-    backPower = newBackPower;
-  }
+    newLeftPower = leftSRL.calculate(newLeftPower);
+    newRightPower = rightSRL.calculate(newRightPower);
+    newFrontPower = frontSRL.calculate(newFrontPower);
+    newBackPower = backSRL.calculate(newBackPower);
 
-  @Override
-  public void periodic() {
-    double leftSetPower = leftSRL.calculate(leftPower);
-    double rightSetPower = rightSRL.calculate(rightPower);
-    double frontSetPower = frontSRL.calculate(frontPower);
-    double backSetPower = backSRL.calculate(backPower);
-
-    left1.set(-leftSetPower);
-    left2.set(-leftSetPower);
-    right1.set(rightSetPower);
-    right2.set(rightSetPower);
-    front.set(frontSetPower);
-    back.set(-backSetPower);
+    left1.set(-newLeftPower);
+    left2.set(-newLeftPower);
+    right1.set(newRightPower);
+    right2.set(newRightPower);
+    front.set(newFrontPower);
+    back.set(-newBackPower);
   }
 }
