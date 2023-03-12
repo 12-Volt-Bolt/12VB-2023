@@ -41,7 +41,8 @@ public class Robot extends TimedRobot {
   private Lifter lifter = new Lifter(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL);
   private Grabber grabber = new Grabber(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.GRABBER_CHANNEL);
 
-  public DriverController controller1 = new DriverController(0, lifter);
+  public DriverController driverController = new DriverController(0, lifter);
+  public CodriverController codriverController = new CodriverController(1);
 
   private SequentialCommandGroup coastOnDisable = new Wait(10000)
       .ignoringDisable(true)
@@ -97,20 +98,29 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    drivetrain.drive(controller1.yDriveAxis(), controller1.xDriveAxis(), controller1.yawDriveAxis());
+    drivetrain.drive(driverController.yDriveAxis(), driverController.xDriveAxis(), driverController.yawDriveAxis());
 
-    if (controller1.closeGrabber()) {
+    if (driverController.closeGrabber()) {
       grabber.close();
     }
-    if (controller1.openGrabber()) {
+    if (driverController.openGrabber()) {
       grabber.open();
     }
 
-    if (controller1.raiseLifter()) {
+    if (driverController.raiseLifter()) {
       lifter.raise();
     }
-    if (controller1.lowerLifter()) {
+    if (driverController.lowerLifter()) {
       lifter.lower();
+    }
+
+    if (codriverController.isConnected()) {
+      if (codriverController.raiseLifter()) {
+        lifter.raise();
+      }
+      if (codriverController.lowerLifter()) {
+        lifter.lower();
+      }
     }
   }
   
