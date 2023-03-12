@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.util.Optional;
-
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.config.TurboModeBindableValue;
 import frc.robot.utility.DeadzoneWithLinearRemap;
@@ -19,6 +17,10 @@ public class DriverController extends XboxController {
     private DeadzoneWithLinearRemap yDeadzone = new DeadzoneWithLinearRemap(1.0, 0.0, 1.0);
     private DeadzoneWithLinearRemap xDeadzone = new DeadzoneWithLinearRemap(1.0, 0.0, 1.0);
     private DeadzoneWithLinearRemap yawDeadzone = new DeadzoneWithLinearRemap(1.0, 0.0, 1.0);
+
+    private ExponentialRemap yExponentialRemap = new ExponentialRemap(1.5, true);
+    private ExponentialRemap xExponentialRemap = new ExponentialRemap(1.5, true);
+    private ExponentialRemap yawExponentialRemap = new ExponentialRemap(1.5, true);
 
     public DriverController(int port) {
         super(port);
@@ -34,21 +36,6 @@ public class DriverController extends XboxController {
         TurboModeBindableValue yawBindValue = new TurboModeBindableValue(this, 0.7, 1.0);
         yawDeadzone.maxPositiveOutput = yawBindValue.cloneValue();
         yawDeadzone.maxNegativeOutput = yawBindValue.cloneValue().negate();
-    }
-  
-    public void setRemappers(
-        Optional<DeadzoneWithLinearRemap> yRemapper,
-        Optional<DeadzoneWithLinearRemap> xRemapper,
-        Optional<DeadzoneWithLinearRemap> yawRemapper) {
-      if (yRemapper.isPresent()) {
-        this.yDeadzone = yRemapper.get();
-      }
-      if (xRemapper.isPresent()) {
-        this.xDeadzone = xRemapper.get();
-      }
-      if (yawRemapper.isPresent()) {
-        this.yawDeadzone = yawRemapper.get();
-      }
     }
 
     /**
@@ -99,7 +86,7 @@ public class DriverController extends XboxController {
     public double yDriveAxis() {
         double input = -getLeftY();
         input = drivestickRemapper.remap(input);
-        input = ExponentialRemap.calculate(input, 1.5);
+        input = yExponentialRemap.calculate(input);
         input = yDeadzone.remap(input);
         return input;
     }
@@ -110,7 +97,7 @@ public class DriverController extends XboxController {
     public double xDriveAxis() {
         double input = getRightTriggerAxis() - getLeftTriggerAxis();
         input = drivestickRemapper.remap(input);
-        input = ExponentialRemap.calculate(input, 1.5);
+        input = xExponentialRemap.calculate(input);
         input = xDeadzone.remap(input);
         return input;
     }
@@ -121,7 +108,7 @@ public class DriverController extends XboxController {
     public double yawDriveAxis() {
         double input = getRightX();
         input = drivestickRemapper.remap(input);
-        input = ExponentialRemap.calculate(input, 1.5);
+        input = yawExponentialRemap.calculate(input);
         input = yawDeadzone.remap(input);
         return input;
     }
