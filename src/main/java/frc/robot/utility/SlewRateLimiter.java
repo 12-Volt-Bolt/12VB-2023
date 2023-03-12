@@ -5,8 +5,6 @@
 package frc.robot.utility;
 
 /** Add your docs here. */
-public abstract class SlewRateLimiter {
-    public abstract double step(double step);
-
+public abstract class SlewRateLimiter implements Remapper<Double> {
     public abstract SlewRateLimiter cloneSRL();
 }

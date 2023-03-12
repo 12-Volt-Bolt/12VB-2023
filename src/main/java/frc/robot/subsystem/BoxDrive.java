@@ -92,10 +92,10 @@ public class BoxDrive extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double leftSetPower = leftSRL.step(leftPower);
-    double rightSetPower = rightSRL.step(rightPower);
-    double frontSetPower = frontSRL.step(frontPower);
-    double backSetPower = backSRL.step(backPower);
+    double leftSetPower = leftSRL.calculate(leftPower);
+    double rightSetPower = rightSRL.calculate(rightPower);
+    double frontSetPower = frontSRL.calculate(frontPower);
+    double backSetPower = backSRL.calculate(backPower);
 
     left1.set(-leftSetPower);
     left2.set(-leftSetPower);

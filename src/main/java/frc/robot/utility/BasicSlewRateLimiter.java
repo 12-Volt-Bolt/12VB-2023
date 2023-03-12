@@ -16,7 +16,8 @@ public class BasicSlewRateLimiter extends SlewRateLimiter {
         this(maxChange, maxChange);
     }
 
-    public double step(double nextValue) {
+    @Override
+    public Double calculate(Double nextValue) {
         if (nextValue > previousValue && nextValue - previousValue > maxPositiveChange) {
             previousValue += maxPositiveChange;
             return previousValue;

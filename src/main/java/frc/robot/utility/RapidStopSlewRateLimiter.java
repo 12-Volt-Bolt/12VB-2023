@@ -55,7 +55,7 @@ public class RapidStopSlewRateLimiter extends SlewRateLimiter {
     }
 
     @Override
-    public double step(double nextValue) {
+    public Double calculate(Double nextValue) {
         if (previousValue > 0) {
             // traveling forward
             if (nextValue > previousValue) {

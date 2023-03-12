@@ -1,6 +1,6 @@
 package frc.robot.utility;
 
-public class ExponentialRemap {
+public class ExponentialRemap implements Remapper<Double> {
     private BindableValue<Double> exponent;
     private BindableValue<Boolean> copySign;
 
@@ -15,7 +15,7 @@ public class ExponentialRemap {
                 new ReferenceBindableValue<Boolean>(copySign));
     }
 
-    public double calculate(double value) {
+    public Double calculate(Double value) {
         if (copySign.value() == true) {
             return Math.copySign(Math.pow(Math.abs(value), exponent.value()), value);
         } else {
