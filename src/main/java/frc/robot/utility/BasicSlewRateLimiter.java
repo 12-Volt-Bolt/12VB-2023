@@ -1,6 +1,6 @@
 package frc.robot.utility;
 
-public class BasicSlewRateLimiter implements SlewRateLimiter {
+public class BasicSlewRateLimiter extends SlewRateLimiter {
 
     private double previousValue;
 
@@ -32,7 +32,7 @@ public class BasicSlewRateLimiter implements SlewRateLimiter {
     }
 
     @Override
-    public SlewRateLimiter clone() {
+    public SlewRateLimiter cloneSRL() {
         return new BasicSlewRateLimiter(maxPositiveChange, maxNegativeChange);
     }
 }

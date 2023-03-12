@@ -8,38 +8,38 @@ import java.util.Optional;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.config.TurboModeBindableValue;
-import frc.robot.utility.Remapper;
+import frc.robot.utility.DeadzoneWithLinearRemap;
 import frc.robot.utility.ThrottleCurve;
 
 /** Add your docs here. */
 public class DriverController extends XboxController {
 
-    private Remapper drivestickRemapper = new Remapper(1.0, 0.2, 1.0);
+    private DeadzoneWithLinearRemap drivestickRemapper = new DeadzoneWithLinearRemap(1.0, 0.2, 1.0);
 
-    private Remapper yRemapper = new Remapper(1.0, 0.0, 1.0);
-    private Remapper xRemapper = new Remapper(1.0, 0.0, 1.0);
-    private Remapper yawRemapper = new Remapper(1.0, 0.0, 1.0);
+    private DeadzoneWithLinearRemap yRemapper = new DeadzoneWithLinearRemap(1.0, 0.0, 1.0);
+    private DeadzoneWithLinearRemap xRemapper = new DeadzoneWithLinearRemap(1.0, 0.0, 1.0);
+    private DeadzoneWithLinearRemap yawRemapper = new DeadzoneWithLinearRemap(1.0, 0.0, 1.0);
 
     public DriverController(int port) {
         super(port);
 
         TurboModeBindableValue yBindValue = new TurboModeBindableValue(this, 0.5, 1.0);
-        yRemapper.maxPositiveOutput = yBindValue.clone();
-        yRemapper.maxNegativeOutput = yBindValue.clone().negate();
+        yRemapper.maxPositiveOutput = yBindValue.cloneValue();
+        yRemapper.maxNegativeOutput = yBindValue.cloneValue().negate();
         
         TurboModeBindableValue xBindValue = new TurboModeBindableValue(this, 0.5, 1.0);
-        xRemapper.maxPositiveOutput = xBindValue.clone();
-        xRemapper.maxNegativeOutput = xBindValue.clone().negate();
+        xRemapper.maxPositiveOutput = xBindValue.cloneValue();
+        xRemapper.maxNegativeOutput = xBindValue.cloneValue().negate();
         
         TurboModeBindableValue yawBindValue = new TurboModeBindableValue(this, 0.7, 1.0);
-        yawRemapper.maxPositiveOutput = yawBindValue.clone();
-        yawRemapper.maxNegativeOutput = yawBindValue.clone().negate();
+        yawRemapper.maxPositiveOutput = yawBindValue.cloneValue();
+        yawRemapper.maxNegativeOutput = yawBindValue.cloneValue().negate();
     }
   
     public void setRemappers(
-        Optional<Remapper> yRemapper,
-        Optional<Remapper> xRemapper,
-        Optional<Remapper> yawRemapper) {
+        Optional<DeadzoneWithLinearRemap> yRemapper,
+        Optional<DeadzoneWithLinearRemap> xRemapper,
+        Optional<DeadzoneWithLinearRemap> yawRemapper) {
       if (yRemapper.isPresent()) {
         this.yRemapper = yRemapper.get();
       }

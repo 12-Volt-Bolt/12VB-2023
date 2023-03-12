@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import frc.robot.subsystem.BoxDrive;
 import frc.robot.subsystem.Lifter;
-import frc.robot.utility.ConstantBindableValue;
+import frc.robot.utility.ReferenceBindableValue;
 import frc.robot.utility.RapidStopSlewRateLimiter;
 import frc.robot.utility.SlewRateLimiter;
 
@@ -13,12 +13,12 @@ public class DrivetrainConfig {
         LifterUpDeceleration decelerationBindableValue = new LifterUpDeceleration(lifter);
     
         SlewRateLimiter frontBackSRL = new RapidStopSlewRateLimiter(
-            new ConstantBindableValue<Double>(0.015), 
-            new ConstantBindableValue<Double>(0.015), 
+            new ReferenceBindableValue<Double>(0.015), 
+            new ReferenceBindableValue<Double>(0.015), 
             decelerationBindableValue, 
-            new ConstantBindableValue<Double>(Double.POSITIVE_INFINITY));
+            new ReferenceBindableValue<Double>(Double.POSITIVE_INFINITY));
     
-        drivetrain.setSlewRateLimiters(Optional.of(frontBackSRL.clone()), Optional.of(frontBackSRL.clone()), Optional.empty(), Optional.empty());    
+        drivetrain.setSlewRateLimiters(Optional.of(frontBackSRL.cloneSRL()), Optional.of(frontBackSRL.cloneSRL()), Optional.empty(), Optional.empty());    
     
         
     }

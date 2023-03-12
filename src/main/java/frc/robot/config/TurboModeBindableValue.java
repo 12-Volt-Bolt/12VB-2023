@@ -26,7 +26,7 @@ public class TurboModeBindableValue implements BindableValue<Double> {
     }
     
     @Override 
-    public TurboModeBindableValue clone() {
+    public TurboModeBindableValue cloneValue() {
         return new TurboModeBindableValue(controller, defaultValue, turboValue);
     }
 }

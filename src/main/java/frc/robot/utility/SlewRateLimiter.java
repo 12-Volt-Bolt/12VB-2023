@@ -5,8 +5,8 @@
 package frc.robot.utility;
 
 /** Add your docs here. */
-public interface SlewRateLimiter {
-    public double step(double step);
+public abstract class SlewRateLimiter {
+    public abstract double step(double step);
 
-    public SlewRateLimiter clone();
+    public abstract SlewRateLimiter cloneSRL();
 }

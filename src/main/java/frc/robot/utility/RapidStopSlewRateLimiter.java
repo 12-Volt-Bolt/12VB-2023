@@ -1,6 +1,6 @@
 package frc.robot.utility;
 
-public class RapidStopSlewRateLimiter implements SlewRateLimiter {
+public class RapidStopSlewRateLimiter extends SlewRateLimiter {
 
     private double previousValue;
 
@@ -35,10 +35,10 @@ public class RapidStopSlewRateLimiter implements SlewRateLimiter {
             double maxPositiveMagnitudeStopChange,
             double maxNegativeMagnitudeStopChange) {
         this(
-                new ConstantBindableValue<Double>(Math.abs(maxPositiveMagnitudeChange)),
-                new ConstantBindableValue<Double>(Math.abs(maxNegativeMagnitudeChange)),
-                new ConstantBindableValue<Double>(Math.abs(maxPositiveMagnitudeStopChange)),
-                new ConstantBindableValue<Double>(Math.abs(maxNegativeMagnitudeStopChange)));
+                new ReferenceBindableValue<Double>(Math.abs(maxPositiveMagnitudeChange)),
+                new ReferenceBindableValue<Double>(Math.abs(maxNegativeMagnitudeChange)),
+                new ReferenceBindableValue<Double>(Math.abs(maxPositiveMagnitudeStopChange)),
+                new ReferenceBindableValue<Double>(Math.abs(maxNegativeMagnitudeStopChange)));
     }
 
     public RapidStopSlewRateLimiter(double maxChange, double maxStopChange) {
@@ -99,11 +99,11 @@ public class RapidStopSlewRateLimiter implements SlewRateLimiter {
     }
 
     @Override
-    public SlewRateLimiter clone() {
+    public SlewRateLimiter cloneSRL() {
         return new RapidStopSlewRateLimiter(
-                maxPositiveMagnitudeChange.clone(), 
-                maxNegativeMagnitudeChange.clone(), 
-                maxPositiveMagnitudeStopChange.clone(), 
-                maxNegativeMagnitudeStopChange.clone());
+                maxPositiveMagnitudeChange.cloneValue(), 
+                maxNegativeMagnitudeChange.cloneValue(), 
+                maxPositiveMagnitudeStopChange.cloneValue(), 
+                maxNegativeMagnitudeStopChange.cloneValue());
     }
 }
