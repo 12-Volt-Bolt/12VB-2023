@@ -7,16 +7,9 @@ package frc.robot.subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogInput;
-/*
- * robotInit() turnOnSensor
- * {any}Periodic or command: value = getUltrasonicSensorRange()
- * disabledInit: turnOffSensor
- * 
- * 
- */
+
 public class UltrasonicSensor extends SubsystemBase {
  
   private DigitalOutput ultrasonicTriggerPin;
@@ -26,13 +19,13 @@ public class UltrasonicSensor extends SubsystemBase {
 
   /** Creates a new Ultrasonic sensor. */
   public UltrasonicSensor(int channel) {
-      ultrasonicTriggerPin = new DigitalOutput(channel);
-      ultrasonicSensor = new AnalogInput(channel);
-    }
+    ultrasonicTriggerPin = new DigitalOutput(channel);
+    ultrasonicSensor = new AnalogInput(channel);
+  }
 
   public UltrasonicSensor() {
-      ultrasonicTriggerPin = new DigitalOutput(0);
-      ultrasonicSensor = new AnalogInput(0);
+    ultrasonicTriggerPin = new DigitalOutput(0);
+    ultrasonicSensor = new AnalogInput(0);
   }
   
   public void turnOnSensor() {
@@ -43,11 +36,11 @@ public class UltrasonicSensor extends SubsystemBase {
     ultrasonicTriggerPin.set(false);
   }
 
-  public double getUltrasonicSensorRange() {
+  public double getCmDistance() {
     voltageScaleFactor = 5/RobotController.getVoltage5V(); //Calculate what percentage of 5 Volts we are actually at
     //Get a reading from the first sensor, scale it by the voltageScaleFactor, and then scale to Centimeters
     ultrasonicSensorRange = ultrasonicSensor.getValue()*voltageScaleFactor*0.125;
-    SmartDashboard.putNumber("Sensor Range (cm)", ultrasonicSensorOneRange);
+    SmartDashboard.putNumber("Sensor Range (cm)", ultrasonicSensorRange);
     return ultrasonicSensorRange;
   }
 
