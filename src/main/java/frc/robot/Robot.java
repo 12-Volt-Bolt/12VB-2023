@@ -99,10 +99,10 @@ public class Robot extends TimedRobot {
     drivetrain.drive(controller1.yDriveAxis(), controller1.xDriveAxis(), controller1.yawDriveAxis());
 
     if (controller1.closeGrabber()) {
-      grabber.open();
+      grabber.close();
     }
     if (controller1.openGrabber()) {
-      grabber.close();
+      grabber.open();
     }
 
     if (controller1.raiseLifter()) {
