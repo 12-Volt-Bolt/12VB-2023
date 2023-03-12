@@ -31,7 +31,7 @@ import frc.robot.subsystem.Lifter;
  */
 public class Robot extends TimedRobot {
 
-  public static DriverController controller1 = new DriverController(0);
+  public static DriverController controller1;
 
   private BoxDrive drivetrain = new BoxDrive();
 
@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     DrivetrainConfig.configSRL(drivetrain, lifter);
+    new DriverController(0, lifter);
 
     compressor.enableDigital();
     lifter.lower();

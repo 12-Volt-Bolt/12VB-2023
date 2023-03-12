@@ -6,16 +6,20 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.config.DriverControllerConfig;
+import frc.robot.subsystem.Lifter;
 import frc.robot.utility.RemapperChain;
 
 /** Add your docs here. */
 public class DriverController extends XboxController {
-    private RemapperChain<Double> yRemappers = DriverControllerConfig.yInputRemappers(this);
-    private RemapperChain<Double> xRemappers = DriverControllerConfig.xInputRemappers(this);
-    private RemapperChain<Double> yawRemappers = DriverControllerConfig.yawInputRemappers(this);
+    private RemapperChain<Double> yRemappers;
+    private RemapperChain<Double> xRemappers;
+    private RemapperChain<Double> yawRemappers;
 
-    public DriverController(int port) {
+    public DriverController(int port, Lifter lifter) {
         super(port);  
+        yRemappers = DriverControllerConfig.yInputRemappers(this, lifter);
+        xRemappers = DriverControllerConfig.xInputRemappers(this);
+        yawRemappers = DriverControllerConfig.yawInputRemappers(this);
     }
 
     /**

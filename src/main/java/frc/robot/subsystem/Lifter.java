@@ -46,4 +46,8 @@ public class Lifter extends SubsystemBase {
         throw new RuntimeException("Lifter 'setPosition' method missing switch case!");
     }
   }
+
+  public boolean wallDetected() {
+    return false;
+  }
 }
