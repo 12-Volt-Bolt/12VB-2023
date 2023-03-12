@@ -13,7 +13,7 @@ public class LifterUpDeceleration implements BindableValue<Double> {
 
     @Override
     public Double value() {
-      return lifter.getPosition() == LifterPosition.RAISED ? 0.02 : Double.POSITIVE_INFINITY;
+      return lifter.getPosition() == LifterPosition.RAISED ? 0.04 : Double.POSITIVE_INFINITY;
     }
     
     @Override
