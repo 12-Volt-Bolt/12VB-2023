@@ -42,7 +42,11 @@ public class Robot extends TimedRobot {
 
   public DriverController controller1 = new DriverController(0, lifter);
 
-  private SequentialCommandGroup coastOnDisable = new Wait(10000).andThen(new SetIdleMode(drivetrain, IdleMode.kCoast));;
+  private SequentialCommandGroup coastOnDisable = new Wait(10000)
+      .ignoringDisable(true)
+      .andThen(
+          new SetIdleMode(drivetrain, IdleMode.kCoast)
+              .ignoringDisable(true));
 
   /**
    * This function is run when the robot is first started up and should be used
