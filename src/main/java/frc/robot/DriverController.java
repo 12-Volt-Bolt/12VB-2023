@@ -5,37 +5,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.config.TurboModeBindableValue;
-import frc.robot.utility.DeadzoneWithLinearRemap;
-import frc.robot.utility.ExponentialRemap;
+import frc.robot.config.DriverControllerConfig;
+import frc.robot.utility.RemapperChain;
 
 /** Add your docs here. */
 public class DriverController extends XboxController {
-
-    private DeadzoneWithLinearRemap drivestickRemapper = new DeadzoneWithLinearRemap(1.0, 0.2, 1.0);
-
-    private DeadzoneWithLinearRemap yDeadzone = new DeadzoneWithLinearRemap(1.0, 0.0, 1.0);
-    private DeadzoneWithLinearRemap xDeadzone = new DeadzoneWithLinearRemap(1.0, 0.0, 1.0);
-    private DeadzoneWithLinearRemap yawDeadzone = new DeadzoneWithLinearRemap(1.0, 0.0, 1.0);
-
-    private ExponentialRemap yExponentialRemap = new ExponentialRemap(1.5, true);
-    private ExponentialRemap xExponentialRemap = new ExponentialRemap(1.5, true);
-    private ExponentialRemap yawExponentialRemap = new ExponentialRemap(1.5, true);
+    private RemapperChain<Double> yRemappers = DriverControllerConfig.yInputRemappers(this);
+    private RemapperChain<Double> xRemappers = DriverControllerConfig.xInputRemappers(this);
+    private RemapperChain<Double> yawRemappers = DriverControllerConfig.yawInputRemappers(this);
 
     public DriverController(int port) {
-        super(port);
-
-        TurboModeBindableValue yBindValue = new TurboModeBindableValue(this, 0.5, 1.0);
-        yDeadzone.maxPositiveOutput = yBindValue.cloneValue();
-        yDeadzone.maxNegativeOutput = yBindValue.cloneValue().negate();
-        
-        TurboModeBindableValue xBindValue = new TurboModeBindableValue(this, 0.5, 1.0);
-        xDeadzone.maxPositiveOutput = xBindValue.cloneValue();
-        xDeadzone.maxNegativeOutput = xBindValue.cloneValue().negate();
-        
-        TurboModeBindableValue yawBindValue = new TurboModeBindableValue(this, 0.7, 1.0);
-        yawDeadzone.maxPositiveOutput = yawBindValue.cloneValue();
-        yawDeadzone.maxNegativeOutput = yawBindValue.cloneValue().negate();
+        super(port);  
     }
 
     /**
@@ -84,33 +64,21 @@ public class DriverController extends XboxController {
      * @return Forward/backward drive power (positive/negative).
      */
     public double yDriveAxis() {
-        double input = -getLeftY();
-        input = drivestickRemapper.remap(input);
-        input = yExponentialRemap.calculate(input);
-        input = yDeadzone.remap(input);
-        return input;
+        return yRemappers.calculate(-getLeftY());
     }
 
     /**
      * @return Right/left strafe power (positive/negative).
      */
     public double xDriveAxis() {
-        double input = getRightTriggerAxis() - getLeftTriggerAxis();
-        input = drivestickRemapper.remap(input);
-        input = xExponentialRemap.calculate(input);
-        input = xDeadzone.remap(input);
-        return input;
+        return xRemappers.calculate(getRightTriggerAxis() - getLeftTriggerAxis());
     }
 
     /**
      * @return Clockwise/counterclockwise rotation power (positive/negative).
      */
     public double yawDriveAxis() {
-        double input = getRightX();
-        input = drivestickRemapper.remap(input);
-        input = yawExponentialRemap.calculate(input);
-        input = yawDeadzone.remap(input);
-        return input;
+        return yawRemappers.calculate(getRightX());
     }
 
     public boolean turboMode() {

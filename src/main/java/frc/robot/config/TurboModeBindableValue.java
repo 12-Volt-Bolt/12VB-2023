@@ -8,8 +8,8 @@ public class TurboModeBindableValue implements BindableValue<Double> {
     private double defaultValue;
     private double turboValue;
 
-    public TurboModeBindableValue(DriverController controller, double defaultValue, double turboValue) {
-        this.controller = controller;
+    public TurboModeBindableValue(DriverController driverController, double defaultValue, double turboValue) {
+        this.controller = driverController;
         this.defaultValue = defaultValue;
         this.turboValue = turboValue;
     }

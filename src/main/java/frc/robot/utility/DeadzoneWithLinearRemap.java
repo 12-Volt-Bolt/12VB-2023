@@ -1,6 +1,6 @@
 package frc.robot.utility;
 
-public class DeadzoneWithLinearRemap {
+public class DeadzoneWithLinearRemap implements Remapper<Double> {
     public BindableValue<Double> maxPositiveInput;
     public BindableValue<Double> maxNegativeInput;
     public BindableValue<Double> minPositiveInput;
@@ -112,9 +112,10 @@ public class DeadzoneWithLinearRemap {
      * @param input The value to remap.
      * @return The remaped value.
      */
-    public double remap(double input) {
+    @Override
+    public Double calculate(Double input) {
         if (input < minPositiveInput.value() && input > minNegativeInput.value()) {
-            return 0;
+            return 0.0;
         }
 
         input = Math.min(input, maxPositiveInput.value());
