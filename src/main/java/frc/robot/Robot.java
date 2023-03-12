@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -14,6 +16,7 @@ import frc.robot.command.Drive;
 import frc.robot.command.LowerLifter;
 import frc.robot.command.OpenGrabber;
 import frc.robot.command.RaiseLifter;
+import frc.robot.command.SetIdleMode;
 import frc.robot.command.Wait;
 import frc.robot.config.DrivetrainConfig;
 import frc.robot.subsystem.BoxDrive;
@@ -31,13 +34,15 @@ import frc.robot.subsystem.Lifter;
  */
 public class Robot extends TimedRobot {
 
-  public static DriverController controller1;
-
   private BoxDrive drivetrain = new BoxDrive();
 
   private Compressor compressor = new Compressor(RobotMap.PNEUMATICS_MODULE_TYPE);
   private Lifter lifter = new Lifter(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL);
   private Grabber grabber = new Grabber(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.GRABBER_CHANNEL);
+
+  public DriverController controller1 = new DriverController(0, lifter);
+
+  private SequentialCommandGroup coastOnDisable = new Wait(10000).andThen(new SetIdleMode(drivetrain, IdleMode.kCoast));;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -47,21 +52,23 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     DrivetrainConfig.configSRL(drivetrain, lifter);
-    new DriverController(0, lifter);
 
     compressor.enableDigital();
     lifter.lower();
     grabber.open();
 
     CameraServer.startAutomaticCapture();
-    
   }
 
-  // @Override
-  // public void robotPeriodic() {}
+  @Override
+  public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
+  }
 
   @Override
   public void autonomousInit() {
+    coastOnDisable.cancel();
+
     SequentialCommandGroup autoSequence = new Wait(100)
         .andThen(new CloseGrabber(grabber))
         .andThen(new RaiseLifter(lifter))
@@ -70,18 +77,16 @@ public class Robot extends TimedRobot {
         .andThen(new LowerLifter(lifter), new Drive(drivetrain, 3000, 0, -0.4, 0));
 
     autoSequence.schedule();
+    drivetrain.setIdleMode(IdleMode.kBrake);
   }
-
-  @Override
-  public void autonomousPeriodic() {
-    CommandScheduler.getInstance().run();
-  }
-
   
   @Override
   public void teleopInit() {
+    coastOnDisable.cancel();
+
     lifter.lower();
     grabber.open();
+    drivetrain.setIdleMode(IdleMode.kBrake);
   }
   
 
@@ -102,15 +107,14 @@ public class Robot extends TimedRobot {
     if (controller1.lowerLifter()) {
       lifter.lower();
     }
-
-    CommandScheduler.getInstance().run();
+  }
+  
+  @Override
+  public void disabledInit() {
+    coastOnDisable.schedule();
   }
 
-  /*
-   * @Override
-   * public void disabledInit() {
-   * }
-   * 
+  /* 
    * @Override
    * public void disabledPeriodic() {
    * }

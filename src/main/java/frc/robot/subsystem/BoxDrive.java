@@ -34,13 +34,13 @@ public class BoxDrive extends SubsystemBase {
   private SlewRateLimiter frontSRL = new RapidStopSlewRateLimiter(0.015);
   private SlewRateLimiter backSRL = new RapidStopSlewRateLimiter(0.015);
 
-  public BoxDrive() {
-    left1.setIdleMode(IdleMode.kBrake);
-    left2.setIdleMode(IdleMode.kBrake);
-    right1.setIdleMode(IdleMode.kBrake);
-    right2.setIdleMode(IdleMode.kBrake);
-    front.setIdleMode(IdleMode.kBrake);
-    back.setIdleMode(IdleMode.kBrake);
+  public void setIdleMode(IdleMode mode) {
+    left1.setIdleMode(mode);
+    left2.setIdleMode(mode);
+    right1.setIdleMode(mode);
+    right2.setIdleMode(mode);
+    front.setIdleMode(mode);
+    back.setIdleMode(mode);
   }
 
   public void setSlewRateLimiters(
