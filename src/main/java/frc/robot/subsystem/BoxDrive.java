@@ -85,4 +85,9 @@ public class BoxDrive extends Drivetrain {
     front.set(newFrontPower);
     back.set(-newBackPower);
   }
+
+  @Override
+  public IdleMode getIdleMode() {
+    return left1.getIdleMode();
+  }
 }

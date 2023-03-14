@@ -66,4 +66,9 @@ public class KopDrive extends Drivetrain {
     right1.setIdleMode(mode);
     right2.setIdleMode(mode);
   }
+
+  @Override
+  public IdleMode getIdleMode() {
+    return left1.getIdleMode();
+  }
 }

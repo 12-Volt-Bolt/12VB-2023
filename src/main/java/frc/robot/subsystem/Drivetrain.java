@@ -33,6 +33,8 @@ public abstract class Drivetrain extends SubsystemBase {
 
   public abstract void setIdleMode(IdleMode mode);
 
+  public abstract IdleMode getIdleMode();
+
   @Override
   public void periodic() {
     setMotors(yPower, xPower, yawPower);

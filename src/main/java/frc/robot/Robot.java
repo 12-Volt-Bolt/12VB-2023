@@ -9,9 +9,12 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.command.DrivetrainIdleMode;
 import frc.robot.command.CloseGrabber;
+import frc.robot.command.CompressorController;
 import frc.robot.command.Drive;
 import frc.robot.command.LowerLifter;
 import frc.robot.command.OpenGrabber;
@@ -64,6 +67,13 @@ public class Robot extends TimedRobot {
     grabber.open();
 
     CameraServer.startAutomaticCapture();
+
+    SmartDashboard.putData("Activite brake", new DrivetrainIdleMode(drivetrain, IdleMode.kBrake, false));
+    SmartDashboard.putData("Deactivite brake", new DrivetrainIdleMode(drivetrain, IdleMode.kCoast, false));
+    SmartDashboard.putData("Force brake on", new DrivetrainIdleMode(drivetrain, IdleMode.kBrake, true));
+    SmartDashboard.putData("Force brake off", new DrivetrainIdleMode(drivetrain, IdleMode.kCoast, true));
+
+    SmartDashboard.putData("Force compressor off", new CompressorController(compressor, false, true));
   }
 
   @Override
