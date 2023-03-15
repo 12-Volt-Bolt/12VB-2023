@@ -5,12 +5,37 @@ import java.util.List;
 
 import frc.robot.DriverController;
 import frc.robot.subsystem.Lifter;
+import frc.robot.subsystem.UltrasonicSensor;
+import frc.robot.utility.BindableValue;
 import frc.robot.utility.DeadzoneWithLinearRemap;
 import frc.robot.utility.ExponentialRemap;
 import frc.robot.utility.Remapper;
 import frc.robot.utility.RemapperChain;
 
 public class DriverControllerConfig {
+    private static DeadzoneWithLinearRemap deadzone() {
+        return new DeadzoneWithLinearRemap(1, 0.2, 1);
+    }
+
+    private static ExponentialRemap throttleCurve() {
+        return new ExponentialRemap(1.5, true);
+    }
+    
+    private static DeadzoneWithLinearRemap turboMode(DriverController controller, double defaultValue, double turboValue) {
+        DeadzoneWithLinearRemap turboRemapper = new DeadzoneWithLinearRemap(1.0, 0.0, 1.0);
+        TurboModeBindableValue turboOutputLimit = new TurboModeBindableValue(controller, defaultValue, turboValue);
+        turboRemapper.maxPositiveOutput = turboOutputLimit.cloneValue();
+        turboRemapper.maxNegativeOutput = turboOutputLimit.cloneValue().negate();
+        return turboRemapper;
+    }
+
+    private static DeadzoneWithLinearRemap wallDetector(Lifter lifter, BindableValue<Double> maxInput) {
+        DeadzoneWithLinearRemap wallDetectorRemapper = new DeadzoneWithLinearRemap(1.0, 1.0);
+        wallDetectorRemapper.maxPositiveOutput = new WallDetectorBindableValue(lifter, 1.0, 0.25);
+        wallDetectorRemapper.maxPositiveInput = maxInput;
+        return wallDetectorRemapper;
+    }
+
     public static RemapperChain<Double> yInputRemappers(DriverController controller, Lifter lifter) {
         List<Remapper<Double>> remappers = new ArrayList<>();
 
@@ -28,7 +53,6 @@ public class DriverControllerConfig {
         remappers.add(turboRemapper);
 
         // wall detection
-        
         DeadzoneWithLinearRemap wallDetectorRemapper = new DeadzoneWithLinearRemap(1.0, 1.0);
         wallDetectorRemapper.maxPositiveOutput = new WallDetectorBindableValue(lifter, 1.0, 0.25);
         wallDetectorRemapper.maxPositiveInput = turboOutputLimit.cloneValue();
@@ -73,5 +97,29 @@ public class DriverControllerConfig {
         remappers.add(turboLimiter);
 
         return new RemapperChain<>(remappers);
+    }
+
+    public static DriverController configDriverController(
+            DriverController driverController, 
+            Lifter lifter, 
+            UltrasonicSensor ultrasonicSensor) {
+        DeadzoneWithLinearRemap turboMode = turboMode(driverController, 0.5, 1.0);
+        driverController.yRemappers()
+                    .addRemapper(deadzone())
+                    .addRemapper(throttleCurve())
+                    .addRemapper(turboMode)
+                    .addRemapper(wallDetector(lifter, turboMode.maxPositiveOutput.cloneValue()));
+                    
+        driverController.xRemappers()
+                    .addRemapper(deadzone())
+                    .addRemapper(throttleCurve())
+                    .addRemapper(turboMode(driverController, 0.5, 1.0));
+                    
+        driverController.yawRemappers()
+                    .addRemapper(deadzone())
+                    .addRemapper(throttleCurve())
+                    .addRemapper(turboMode(driverController, 0.5, 1.0));
+                    
+        return driverController;
     }
 }

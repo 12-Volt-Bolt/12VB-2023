@@ -8,8 +8,13 @@ public class RemapperChain<T> implements Remapper<T> {
 
     public RemapperChain() {}
 
-    public RemapperChain(List<Remapper<T>> remapper) {
-        remappers = remapper;
+    public RemapperChain(List<Remapper<T>> remappers) {
+        this.remappers = remappers;
+    }
+
+    public RemapperChain<T> addRemapper(Remapper<T> remapper) {
+        remappers.add(remapper);
+        return this;
     }
 
     @Override

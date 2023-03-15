@@ -14,8 +14,8 @@ public class RobotMap {
 
     public static final int MOTOR_DRIVERSIDE_1 = 2;
     public static final int MOTOR_DRIVERSIDE_2 = 3;
-    public static final int MOTOR_PASSENGERSIDE_1 = 7;
-    public static final int MOTOR_PASSENGERSIDE_2 = 8;
+    public static final int MOTOR_PASSENGERSIDE_1 = 8;
+    public static final int MOTOR_PASSENGERSIDE_2 = 9;
     public static final int MOTOR_FRONT = 1;
     public static final int MOTOR_REAR = 10;
 }

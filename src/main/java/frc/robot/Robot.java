@@ -21,11 +21,13 @@ import frc.robot.command.OpenGrabber;
 import frc.robot.command.RaiseLifter;
 import frc.robot.command.SetIdleMode;
 import frc.robot.command.Wait;
+import frc.robot.config.DriverControllerConfig;
 import frc.robot.config.DrivetrainConfig;
 import frc.robot.subsystem.BoxDrive;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.subsystem.Grabber;
 import frc.robot.subsystem.Lifter;
+import frc.robot.subsystem.UltrasonicSensor;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -43,8 +45,9 @@ public class Robot extends TimedRobot {
   private Compressor compressor = new Compressor(RobotMap.PNEUMATICS_MODULE_TYPE);
   private Lifter lifter = new Lifter(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL);
   private Grabber grabber = new Grabber(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.GRABBER_CHANNEL);
+  private UltrasonicSensor ultrasonicSensor = new UltrasonicSensor(0);
 
-  public DriverController driverController = new DriverController(0, lifter);
+  public DriverController driverController;
   public CodriverController codriverController = new CodriverController(1);
 
   private SequentialCommandGroup coastOnDisable = new Wait(10000)
@@ -61,6 +64,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = DrivetrainConfig.configBoxDrive(new BoxDrive(), lifter);
+    driverController = DriverControllerConfig.configDriverController(new DriverController(0), lifter, ultrasonicSensor);
 
     compressor.enableDigital();
     lifter.lower();
