@@ -7,11 +7,15 @@ package frc.robot.subsystem;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utility.BindableValue;
+import frc.robot.utility.ReferenceBindableValue;
 
 public abstract class Drivetrain extends SubsystemBase {
   private double yPower;
   private double xPower;
   private double yawPower;
+
+  public BindableValue<Boolean> forceStop = new ReferenceBindableValue<Boolean>(false);
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {}
@@ -29,7 +33,9 @@ public abstract class Drivetrain extends SubsystemBase {
     this.yawPower = yawPower;
   }
 
-  protected abstract void setMotors(double yPower, double xPower, double yawPower);
+  protected abstract void calculatrMotorPowers(double yPower, double xPower, double yawPower);
+
+  protected abstract void stopMotors();
 
   public abstract void setIdleMode(IdleMode mode);
 
@@ -37,6 +43,11 @@ public abstract class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    setMotors(yPower, xPower, yawPower);
+    if (forceStop.value()) {
+      stopMotors();
+      setIdleMode(IdleMode.kBrake);
+    } else {
+      calculatrMotorPowers(yPower, xPower, yawPower);
+    }
   }
 }

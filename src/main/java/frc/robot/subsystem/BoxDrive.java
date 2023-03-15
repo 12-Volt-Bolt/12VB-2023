@@ -58,7 +58,7 @@ public class BoxDrive extends Drivetrain {
   }
 
   @Override
-  protected void setMotors(double yPower, double xPower, double yawPower) {
+  protected void calculatrMotorPowers(double yPower, double xPower, double yawPower) {
     yawPower = -yawPower;
 
     double newLeftPower = yPower;
@@ -89,5 +89,15 @@ public class BoxDrive extends Drivetrain {
   @Override
   public IdleMode getIdleMode() {
     return left1.getIdleMode();
+  }
+
+  @Override
+  protected void stopMotors() {
+    left1.set(0);
+    left2.set(0);
+    right1.set(0);
+    right2.set(0);
+    front.set(0);
+    back.set(0);
   }
 }

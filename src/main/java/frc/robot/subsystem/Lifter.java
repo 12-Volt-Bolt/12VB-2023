@@ -24,7 +24,7 @@ public class Lifter extends SubsystemBase {
  
   private Solenoid solenoid;
   private Optional<AnalogInput> ultrasonicSensor = Optional.empty();
-  private double wallDetectorLimitCm = 50;
+  private double wallDetectorLimitCm = 100;
 
   /** Creates a new Lifter. */
   public Lifter(PneumaticsModuleType moduleType, int lifterChannel, Optional<Integer> sensorChannel) {
@@ -74,6 +74,6 @@ public class Lifter extends SubsystemBase {
     double detectedDistanceCm = ultrasonicSensor.get().getValue() * voltageScaleFactor * CM_SCALE_FACTOR;
     SmartDashboard.putNumber("Sensor Range (cm)", detectedDistanceCm);
 
-    return detectedDistanceCm > wallDetectorLimitCm;
+    return detectedDistanceCm < wallDetectorLimitCm;
   }
 }

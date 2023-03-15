@@ -13,6 +13,8 @@ public class DriverController extends XboxController {
     private RemapperChain<Double> xRemappers = new RemapperChain<Double>();
     private RemapperChain<Double> yawRemappers = new RemapperChain<Double>();
 
+    private boolean releasedPneumaticBrake = true;
+
     public DriverController(int port) {
         super(port);
     }
@@ -94,5 +96,18 @@ public class DriverController extends XboxController {
 
     public boolean turboMode() {
         return getLeftBumper() || getRightBumper();
+    }
+
+    public boolean togglePneumaticBrake() {
+        boolean state = getStartButton() && getBackButton();
+        if (!state) {
+            releasedPneumaticBrake = true;
+            return false;
+        } else if (!releasedPneumaticBrake) {
+            return false;
+        } else {
+            releasedPneumaticBrake = false;
+            return true;
+        }
     }
 }

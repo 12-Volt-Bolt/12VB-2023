@@ -29,6 +29,7 @@ import frc.robot.subsystem.BoxDrive;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.subsystem.Grabber;
 import frc.robot.subsystem.Lifter;
+import frc.robot.subsystem.PneumaticBrake;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -41,13 +42,14 @@ import frc.robot.subsystem.Lifter;
  */
 public class Robot extends TimedRobot {
 
-  private Drivetrain drivetrain;
-
   private Compressor compressor = new Compressor(RobotMap.PNEUMATICS_MODULE_TYPE);
-  private Lifter lifter = new Lifter(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL, Optional.of(0));
-  private Grabber grabber = new Grabber(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.GRABBER_CHANNEL);
 
-  public DriverController driverController;
+  private Lifter lifter = new Lifter(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL, Optional.of(0));
+  private Drivetrain drivetrain = DrivetrainConfig.configBoxDrive(new BoxDrive(), lifter);
+  private Grabber grabber = new Grabber(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.GRABBER_CHANNEL);
+  private PneumaticBrake pneumaticBrake = new PneumaticBrake(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.PNEUMATIC_BRAKE_CHANNEL);
+
+  public DriverController driverController = DriverControllerConfig.configDriverController(new DriverController(0), lifter);
   public CodriverController codriverController = new CodriverController(1);
 
   private SequentialCommandGroup coastOnDisable = new Wait(10000)
@@ -63,9 +65,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    drivetrain = DrivetrainConfig.configBoxDrive(new BoxDrive(), lifter);
-    driverController = DriverControllerConfig.configDriverController(new DriverController(0), lifter);
-
+    drivetrain.forceStop = pneumaticBrake;
+                
     compressor.enableDigital();
     lifter.lower();
     grabber.open();
@@ -135,6 +136,10 @@ public class Robot extends TimedRobot {
       if (codriverController.lowerLifter()) {
         lifter.lower();
       }
+    }
+
+    if (driverController.togglePneumaticBrake()) {
+      pneumaticBrake.toggle(); 
     }
   }
   
