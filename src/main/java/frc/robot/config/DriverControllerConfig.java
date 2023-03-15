@@ -5,7 +5,6 @@ import java.util.List;
 
 import frc.robot.DriverController;
 import frc.robot.subsystem.Lifter;
-import frc.robot.subsystem.UltrasonicSensor;
 import frc.robot.utility.BindableValue;
 import frc.robot.utility.DeadzoneWithLinearRemap;
 import frc.robot.utility.ExponentialRemap;
@@ -101,8 +100,7 @@ public class DriverControllerConfig {
 
     public static DriverController configDriverController(
             DriverController driverController, 
-            Lifter lifter, 
-            UltrasonicSensor ultrasonicSensor) {
+            Lifter lifter) {
         DeadzoneWithLinearRemap turboMode = turboMode(driverController, 0.5, 1.0);
         driverController.yRemappers()
                     .addRemapper(deadzone())
@@ -119,7 +117,7 @@ public class DriverControllerConfig {
                     .addRemapper(deadzone())
                     .addRemapper(throttleCurve())
                     .addRemapper(turboMode(driverController, 0.5, 1.0));
-                    
+
         return driverController;
     }
 }

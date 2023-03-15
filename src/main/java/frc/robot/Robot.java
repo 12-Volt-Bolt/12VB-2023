@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -27,7 +29,6 @@ import frc.robot.subsystem.BoxDrive;
 import frc.robot.subsystem.Drivetrain;
 import frc.robot.subsystem.Grabber;
 import frc.robot.subsystem.Lifter;
-import frc.robot.subsystem.UltrasonicSensor;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -43,9 +44,8 @@ public class Robot extends TimedRobot {
   private Drivetrain drivetrain;
 
   private Compressor compressor = new Compressor(RobotMap.PNEUMATICS_MODULE_TYPE);
-  private Lifter lifter = new Lifter(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL);
+  private Lifter lifter = new Lifter(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_CHANNEL, Optional.of(0));
   private Grabber grabber = new Grabber(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.GRABBER_CHANNEL);
-  private UltrasonicSensor ultrasonicSensor = new UltrasonicSensor(0);
 
   public DriverController driverController;
   public CodriverController codriverController = new CodriverController(1);
@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     drivetrain = DrivetrainConfig.configBoxDrive(new BoxDrive(), lifter);
-    driverController = DriverControllerConfig.configDriverController(new DriverController(0), lifter, ultrasonicSensor);
+    driverController = DriverControllerConfig.configDriverController(new DriverController(0), lifter);
 
     compressor.enableDigital();
     lifter.lower();
