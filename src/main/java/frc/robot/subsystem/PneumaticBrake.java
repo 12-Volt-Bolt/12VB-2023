@@ -11,24 +11,27 @@ import frc.robot.utility.BindableValue;
 
 public class PneumaticBrake extends SubsystemBase implements BindableValue<Boolean> {
 
-  private Solenoid brake;
+  private Solenoid upBrake;
+  private Solenoid downBrake;
 
   /** Creates a new PneumaticBrake. */
-  public PneumaticBrake(PneumaticsModuleType moduleType, int channel) {
-    brake = new Solenoid(moduleType, channel);
+  public PneumaticBrake(PneumaticsModuleType moduleType, int upChannel, int downChannel) {
+    upBrake = new Solenoid(moduleType, upChannel);
+    downBrake = new Solenoid(moduleType, downChannel);
   }
 
   public void setBrake(boolean state) {
-    brake.set(state);
+    upBrake.set(state);
+    downBrake.set(!state);
   }
 
   @Override
   public Boolean value() {
-    return brake.get();
+    return upBrake.get();
   }
 
   public void toggle() {
-    brake.set(!brake.get());
+    setBrake(!value());
   }
 
   @Override
