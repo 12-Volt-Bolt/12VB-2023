@@ -22,7 +22,7 @@ public class PneumaticBrake extends SubsystemBase implements BindableValue<Boole
 
   public void setBrake(boolean state) {
     upBrake.set(state);
-    downBrake.set(!state);
+    downBrake.set(state);
   }
 
   @Override

@@ -48,12 +48,12 @@ public class Lifter extends SubsystemBase {
 
   public void raise() {
     upSolenoid.set(true);
-    downSolenoid.set(false);
+    downSolenoid.set(true);
   }
 
   public void lower() {
     upSolenoid.set(false);
-    downSolenoid.set(true);
+    downSolenoid.set(false);
   }
 
   public LifterPosition getPosition() {

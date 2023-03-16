@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
   private Lifter lifter = new Lifter(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.LIFTER_UP_CHANNEL, RobotMap.LIFTER_DOWN_CHANNEL, Optional.of(0));
   private Drivetrain drivetrain = DrivetrainConfig.configBoxDrive(new BoxDrive(), lifter);
   private Grabber grabber = new Grabber(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.GRABBER_CHANNEL);
-  private PneumaticBrake pneumaticBrake = new PneumaticBrake(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.PNEUMATIC_BRAKE_DOWN_CHANNEL, RobotMap.PNEUMATIC_BRAKE_DOWN_CHANNEL);
+  private PneumaticBrake pneumaticBrake = new PneumaticBrake(RobotMap.PNEUMATICS_MODULE_TYPE, RobotMap.PNEUMATIC_BRAKE_DOWN_CHANNEL, RobotMap.PNEUMATIC_BRAKE_UP_CHANNEL);
 
   public DriverController driverController = DriverControllerConfig.configDriverController(new DriverController(0), lifter);
   public CodriverController codriverController = new CodriverController(1);
@@ -99,6 +99,7 @@ public class Robot extends TimedRobot {
 
     autoSequence.schedule();
     drivetrain.setIdleMode(IdleMode.kBrake);
+    compressor.enableDigital();
   }
   
   @Override
@@ -108,6 +109,7 @@ public class Robot extends TimedRobot {
     lifter.lower();
     grabber.open();
     drivetrain.setIdleMode(IdleMode.kBrake);
+    compressor.enableDigital();
   }
   
 
