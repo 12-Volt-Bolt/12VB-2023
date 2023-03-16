@@ -64,7 +64,8 @@ public class Robot extends TimedRobot {
       .andThen(new RaiseLifter(lifter))
       .andThen(new Drive(drivetrain, 1000, 0.2, 0, 0))
       .andThen(new OpenGrabber(grabber))
-      .andThen(new LowerLifter(lifter), new Drive(drivetrain, 3000, -0.2, 0 , 0));
+      .andThen(new Wait(300))
+      .andThen(new LowerLifter(lifter), new Drive(drivetrain, 3000, -0.4, 0 , 0));
           
 
   /**
@@ -89,7 +90,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Force compressor off", new CompressorController(compressor, false, true).ignoringDisable(true));
 
-    SmartDashboard.putData("Do auto", new RunCommandInAuto(this, autoSequence));
+    SmartDashboard.putData("Do auto", new RunCommandInAuto(this, autoSequence).ignoringDisable(true));
   }
 
   @Override

@@ -22,12 +22,14 @@ public class RunCommandInAuto extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    endCommand = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (robot.isAutonomous()) {
+    if (robot.isAutonomous() && !robot.isDisabled()) {
       commandToRun.schedule();
       endCommand = true;
     }

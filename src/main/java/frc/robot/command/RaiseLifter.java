@@ -22,7 +22,7 @@ public class RaiseLifter extends CommandBase {
   @Override
   public void initialize() {
     lifter.raise();
-    endTimeMillis = System.currentTimeMillis() + 1000;
+    endTimeMillis = System.currentTimeMillis() + 2000;
   }
 
   // Returns true when the command should end.
