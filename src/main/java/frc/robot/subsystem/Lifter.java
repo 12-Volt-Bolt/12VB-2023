@@ -22,13 +22,20 @@ public class Lifter extends SubsystemBase {
     LOWERED
   }
  
-  private Solenoid solenoid;
+  private Solenoid upSolenoid;
+  private Solenoid downSolenoid;
   private Optional<AnalogInput> ultrasonicSensor = Optional.empty();
   private double wallDetectorLimitCm = 150;
 
   /** Creates a new Lifter. */
-  public Lifter(PneumaticsModuleType moduleType, int lifterChannel, Optional<Integer> sensorChannel) {
-    solenoid = new Solenoid(moduleType, lifterChannel);
+  public Lifter(
+      PneumaticsModuleType moduleType, 
+      int upChannel, 
+      int downChannel, 
+      Optional<Integer> sensorChannel) {
+    upSolenoid = new Solenoid(moduleType, upChannel);
+    downSolenoid = new Solenoid(moduleType, downChannel);
+
     if (sensorChannel.isPresent()) {
       ultrasonicSensor = Optional.of(new AnalogInput(sensorChannel.get()));
     }
@@ -40,15 +47,17 @@ public class Lifter extends SubsystemBase {
   }
 
   public void raise() {
-    solenoid.set(true);
+    upSolenoid.set(true);
+    downSolenoid.set(false);
   }
 
   public void lower() {
-    solenoid.set(false);
+    upSolenoid.set(false);
+    downSolenoid.set(true);
   }
 
   public LifterPosition getPosition() {
-    return solenoid.get() ? LifterPosition.RAISED : LifterPosition.LOWERED;
+    return upSolenoid.get() ? LifterPosition.RAISED : LifterPosition.LOWERED;
   }
 
   public void setPosition(LifterPosition position) {

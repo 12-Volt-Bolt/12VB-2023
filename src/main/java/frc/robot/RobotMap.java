@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 public class RobotMap {
 
     public static final PneumaticsModuleType PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.CTREPCM;
-    public static final int LIFTER_CHANNEL = 2;
+    public static final int LIFTER_UP_CHANNEL = 2;
+    public static final int LIFTER_DOWN_CHANNEL = 0;
     public static final int GRABBER_CHANNEL = 3;
     public static final int PNEUMATIC_BRAKE_CHANNEL = 1;
 
