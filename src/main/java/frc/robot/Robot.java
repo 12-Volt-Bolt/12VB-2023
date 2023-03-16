@@ -163,11 +163,14 @@ public class Robot extends TimedRobot {
    * @Override
    * public void disabledPeriodic() {
    * }
-   * 
-   * @Override
-   * public void testInit() {
-   * }
-   * 
+   */ 
+
+  @Override
+  public void testInit() {
+    compressor.enableDigital();
+  }
+
+  /*
    * @Override
    * public void testPeriodic() {
    * }
