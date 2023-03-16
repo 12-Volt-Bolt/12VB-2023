@@ -24,7 +24,7 @@ public class Lifter extends SubsystemBase {
  
   private Solenoid solenoid;
   private Optional<AnalogInput> ultrasonicSensor = Optional.empty();
-  private double wallDetectorLimitCm = 100;
+  private double wallDetectorLimitCm = 150;
 
   /** Creates a new Lifter. */
   public Lifter(PneumaticsModuleType moduleType, int lifterChannel, Optional<Integer> sensorChannel) {
