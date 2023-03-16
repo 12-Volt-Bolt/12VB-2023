@@ -21,6 +21,7 @@ import frc.robot.command.Drive;
 import frc.robot.command.LowerLifter;
 import frc.robot.command.OpenGrabber;
 import frc.robot.command.RaiseLifter;
+import frc.robot.command.RunCommandInAuto;
 import frc.robot.command.SetIdleMode;
 import frc.robot.command.Wait;
 import frc.robot.config.DriverControllerConfig;
@@ -58,6 +59,14 @@ public class Robot extends TimedRobot {
           new SetIdleMode(drivetrain, IdleMode.kCoast)
               .ignoringDisable(true));
 
+  private SequentialCommandGroup autoSequence = new Wait(100)
+      .andThen(new CloseGrabber(grabber))
+      .andThen(new RaiseLifter(lifter))
+      .andThen(new Drive(drivetrain, 1000, 0.2, 0, 0))
+      .andThen(new OpenGrabber(grabber))
+      .andThen(new LowerLifter(lifter), new Drive(drivetrain, 3000, -0.2, 0 , 0));
+          
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -79,6 +88,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Force brake off", new DrivetrainIdleMode(drivetrain, IdleMode.kCoast, true).ignoringDisable(true));
 
     SmartDashboard.putData("Force compressor off", new CompressorController(compressor, false, true).ignoringDisable(true));
+
+    SmartDashboard.putData("Do auto", new RunCommandInAuto(this, autoSequence));
   }
 
   @Override
@@ -90,14 +101,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     coastOnDisable.cancel();
 
-    SequentialCommandGroup autoSequence = new Wait(100)
-        .andThen(new CloseGrabber(grabber))
-        .andThen(new RaiseLifter(lifter))
-        .andThen(new Drive(drivetrain, 1000, 0, 0.2, 0))
-        .andThen(new OpenGrabber(grabber))
-        .andThen(new LowerLifter(lifter), new Drive(drivetrain, 3000, 0, -0.4, 0));
-
-    autoSequence.schedule();
     drivetrain.setIdleMode(IdleMode.kBrake);
     compressor.enableDigital();
   }

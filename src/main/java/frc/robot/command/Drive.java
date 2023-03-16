@@ -17,7 +17,14 @@ public class Drive extends CommandBase {
 
   private long endTimeMillis;
 
-  public Drive(Drivetrain drivetrain, long runTimeMillis, double xPower, double yPower, double zPower) {
+  /**
+   * Parameter definitions use the pattern positive/negative.
+   * 
+   * @param yPower Drive forward/backward.
+   * @param xPower Strafe right/left.
+   * @param yawPower Rotate clockwise/counterclockwise.
+   */
+  public Drive(Drivetrain drivetrain, long runTimeMillis, double yPower, double xPower, double zPower) {
     this.drivetrain = drivetrain;
     this.runTimeMillis = runTimeMillis;
     this.xPower = xPower;
@@ -35,7 +42,7 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.drive(xPower, yPower, zPower);
+    drivetrain.drive(yPower, xPower, zPower);
   }
 
   // Called once the command ends or is interrupted.
