@@ -73,12 +73,12 @@ public class Robot extends TimedRobot {
 
     CameraServer.startAutomaticCapture();
 
-    SmartDashboard.putData("Activite brake", new DrivetrainIdleMode(drivetrain, IdleMode.kBrake, false));
-    SmartDashboard.putData("Deactivite brake", new DrivetrainIdleMode(drivetrain, IdleMode.kCoast, false));
-    SmartDashboard.putData("Force brake on", new DrivetrainIdleMode(drivetrain, IdleMode.kBrake, true));
-    SmartDashboard.putData("Force brake off", new DrivetrainIdleMode(drivetrain, IdleMode.kCoast, true));
+    SmartDashboard.putData("Activite brake", new DrivetrainIdleMode(drivetrain, IdleMode.kBrake, false).ignoringDisable(true));
+    SmartDashboard.putData("Deactivite brake", new DrivetrainIdleMode(drivetrain, IdleMode.kCoast, false).ignoringDisable(true));
+    SmartDashboard.putData("Force brake on", new DrivetrainIdleMode(drivetrain, IdleMode.kBrake, true).ignoringDisable(true));
+    SmartDashboard.putData("Force brake off", new DrivetrainIdleMode(drivetrain, IdleMode.kCoast, true).ignoringDisable(true));
 
-    SmartDashboard.putData("Force compressor off", new CompressorController(compressor, false, true));
+    SmartDashboard.putData("Force compressor off", new CompressorController(compressor, false, true).ignoringDisable(true));
   }
 
   @Override
@@ -145,6 +145,11 @@ public class Robot extends TimedRobot {
   
   @Override
   public void disabledInit() {
+    coastOnDisable = new Wait(10000)
+      .ignoringDisable(true)
+      .andThen(
+          new SetIdleMode(drivetrain, IdleMode.kCoast)
+              .ignoringDisable(true));
     coastOnDisable.schedule();
   }
 

@@ -19,7 +19,6 @@ public class DrivetrainIdleMode extends CommandBase {
     this.drivetrain = drivetrain;
     this.mode = mode;
     this.force = force;
-    this.ignoringDisable(true);
   }
 
   // Called when the command is initially scheduled.

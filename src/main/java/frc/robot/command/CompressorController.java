@@ -19,7 +19,6 @@ public class CompressorController extends CommandBase {
     this.enabled = enabled;
     this.force = force;
 
-    this.ignoringDisable(true);
   }
 
   // Called when the command is initially scheduled.
