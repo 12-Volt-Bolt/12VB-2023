@@ -41,6 +41,10 @@ public abstract class Drivetrain extends SubsystemBase {
 
   public abstract IdleMode getIdleMode();
 
+  public abstract double leftRotationCount();
+
+  public abstract double leftInchCount();
+
   @Override
   public void periodic() {
     if (forceStop.value()) {

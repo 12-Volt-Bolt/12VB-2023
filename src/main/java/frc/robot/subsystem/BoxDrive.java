@@ -100,4 +100,14 @@ public class BoxDrive extends Drivetrain {
     front.set(0);
     back.set(0);
   }
+
+  @Override
+  public double leftRotationCount() {
+    return left1.getEncoder().getPosition();
+  }
+
+  @Override
+  public double leftInchCount() {
+    return leftRotationCount() / 10.71 * 18.85;
+  }
 }

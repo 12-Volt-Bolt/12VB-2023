@@ -34,13 +34,13 @@ public class DriverControllerConfig {
         driverController.yRemappers()
                     .addRemapper(deadzone())
                     .addRemapper(throttleCurve())
-                    .addRemapper(turboMode(driverController, 0.5, 1.0))
+                    .addRemapper(turboMode(driverController, 0.7, 1.0))
                     .addRemapper(wallDetector(lifter));
                     
         driverController.xRemappers()
                     .addRemapper(deadzone())
                     .addRemapper(throttleCurve())
-                    .addRemapper(turboMode(driverController, 0.5, 1.0));
+                    .addRemapper(turboMode(driverController, 0.7, 1.0));
                     
         driverController.yawRemappers()
                     .addRemapper(deadzone())

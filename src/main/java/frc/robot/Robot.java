@@ -18,12 +18,14 @@ import frc.robot.command.DrivetrainIdleMode;
 import frc.robot.command.CloseGrabber;
 import frc.robot.command.CompressorController;
 import frc.robot.command.Drive;
+import frc.robot.command.DriveDistance;
 import frc.robot.command.LowerLifter;
 import frc.robot.command.OpenGrabber;
 import frc.robot.command.RaiseLifter;
 import frc.robot.command.RunCommandInAuto;
 import frc.robot.command.SetIdleMode;
 import frc.robot.command.Wait;
+import frc.robot.command.DriveDistance.Direction;
 import frc.robot.config.DriverControllerConfig;
 import frc.robot.config.DrivetrainConfig;
 import frc.robot.subsystem.BoxDrive;
@@ -59,13 +61,23 @@ public class Robot extends TimedRobot {
           new SetIdleMode(drivetrain, IdleMode.kCoast)
               .ignoringDisable(true));
 
-  private SequentialCommandGroup autoSequence = new Wait(100)
+  private SequentialCommandGroup chargeStationAutoSequence = new Wait(100)
       .andThen(new CloseGrabber(grabber))
       .andThen(new RaiseLifter(lifter))
       .andThen(new Drive(drivetrain, 1000, 0.2, 0, 0))
       .andThen(new OpenGrabber(grabber))
       .andThen(new Wait(300))
-      .andThen(new LowerLifter(lifter), new Drive(drivetrain, 3000, -0.4, 0 , 0));
+      .andThen(new DriveDistance(drivetrain, 110, -0.4, Direction.BACKWARD))
+      .andThen(new LowerLifter(lifter));
+
+      private SequentialCommandGroup taxiAutoSequence = new Wait(100)
+          .andThen(new CloseGrabber(grabber))
+          .andThen(new RaiseLifter(lifter))
+          .andThen(new Drive(drivetrain, 1000, 0.2, 0, 0))
+          .andThen(new OpenGrabber(grabber))
+          .andThen(new Wait(300))
+          .andThen(new Drive(drivetrain, 3000, -0.4, 0, 0))
+          .andThen(new LowerLifter(lifter));
           
 
   /**
@@ -83,6 +95,8 @@ public class Robot extends TimedRobot {
 
     CameraServer.startAutomaticCapture();
 
+    SmartDashboard.putData("Test distance drive", new DriveDistance(drivetrain, 18, 0.2, Direction.BACKWARD));
+
     SmartDashboard.putData("Activite brake", new DrivetrainIdleMode(drivetrain, IdleMode.kBrake, false).ignoringDisable(true));
     SmartDashboard.putData("Deactivite brake", new DrivetrainIdleMode(drivetrain, IdleMode.kCoast, false).ignoringDisable(true));
     SmartDashboard.putData("Force brake on", new DrivetrainIdleMode(drivetrain, IdleMode.kBrake, true).ignoringDisable(true));
@@ -90,7 +104,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Force compressor off", new CompressorController(compressor, false, true).ignoringDisable(true));
 
-    SmartDashboard.putData("Do auto", new RunCommandInAuto(this, autoSequence).ignoringDisable(true));
+    SmartDashboard.putData("Taxi auto", new RunCommandInAuto(this, taxiAutoSequence).ignoringDisable(true));
+    SmartDashboard.putData("Charge Station auto", new RunCommandInAuto(this, chargeStationAutoSequence).ignoringDisable(true));
   }
 
   @Override

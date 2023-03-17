@@ -79,4 +79,14 @@ public class KopDrive extends Drivetrain {
     right1.set(0);
     right2.set(0);
   }
+
+  @Override
+  public double leftRotationCount() {
+    return left1.getEncoder().getPosition();
+  }
+
+  @Override
+  public double leftInchCount() {
+    return leftRotationCount() / 10.71 * 18.85;
+  }
 }
