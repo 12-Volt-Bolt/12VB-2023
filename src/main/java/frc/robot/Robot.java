@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
       .andThen(new Drive(drivetrain, 1000, 0.2, 0, 0))
       .andThen(new OpenGrabber(grabber))
       .andThen(new Wait(300))
-      .andThen(new DriveDistance(drivetrain, 110, -0.4, Direction.BACKWARD))
+      .andThen(new DriveDistance(drivetrain, 90, -0.4, Direction.BACKWARD))
       .andThen(new LowerLifter(lifter));
 
       private SequentialCommandGroup taxiAutoSequence = new Wait(100)
@@ -105,7 +105,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Force compressor off", new CompressorController(compressor, false, true).ignoringDisable(true));
 
     SmartDashboard.putData("Taxi auto", new RunCommandInAuto(this, taxiAutoSequence).ignoringDisable(true));
-    SmartDashboard.putData("Charge Station auto", new RunCommandInAuto(this, chargeStationAutoSequence).ignoringDisable(true));
+    SmartDashboard.putData("Charge station auto", new RunCommandInAuto(this, chargeStationAutoSequence).ignoringDisable(true));
   }
 
   @Override
