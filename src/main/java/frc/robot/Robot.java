@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.command.DrivetrainIdleMode;
 import frc.robot.command.CloseGrabber;
 import frc.robot.command.CompressorController;
-import frc.robot.command.Drive;
+import frc.robot.command.DriveTime;
 import frc.robot.command.DriveDistance;
 import frc.robot.command.LowerLifter;
 import frc.robot.command.OpenGrabber;
@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
   private SequentialCommandGroup chargeStationAutoSequence = new Wait(100)
       .andThen(new CloseGrabber(grabber))
       .andThen(new RaiseLifter(lifter))
-      .andThen(new Drive(drivetrain, 1000, 0.2, 0, 0))
+      .andThen(new DriveTime(drivetrain, 1000, 0.2, 0, 0))
       .andThen(new OpenGrabber(grabber))
       .andThen(new Wait(300))
       .andThen(new DriveDistance(drivetrain, 90, -0.4, Direction.BACKWARD))
@@ -73,10 +73,10 @@ public class Robot extends TimedRobot {
       private SequentialCommandGroup taxiAutoSequence = new Wait(100)
           .andThen(new CloseGrabber(grabber))
           .andThen(new RaiseLifter(lifter))
-          .andThen(new Drive(drivetrain, 1000, 0.2, 0, 0))
+          .andThen(new DriveTime(drivetrain, 1000, 0.2, 0, 0))
           .andThen(new OpenGrabber(grabber))
           .andThen(new Wait(300))
-          .andThen(new Drive(drivetrain, 3000, -0.4, 0, 0))
+          .andThen(new DriveTime(drivetrain, 3000, -0.4, 0, 0))
           .andThen(new LowerLifter(lifter));
           
 

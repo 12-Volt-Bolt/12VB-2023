@@ -7,7 +7,7 @@ package frc.robot.command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.Drivetrain;
 
-public class Drive extends CommandBase {
+public class DriveTime extends CommandBase {
   
   private Drivetrain drivetrain;
   private long runTimeMillis; 
@@ -24,7 +24,7 @@ public class Drive extends CommandBase {
    * @param xPower Strafe right/left.
    * @param yawPower Rotate clockwise/counterclockwise.
    */
-  public Drive(Drivetrain drivetrain, long runTimeMillis, double yPower, double xPower, double zPower) {
+  public DriveTime(Drivetrain drivetrain, long runTimeMillis, double yPower, double xPower, double zPower) {
     this.drivetrain = drivetrain;
     this.runTimeMillis = runTimeMillis;
     this.xPower = xPower;
